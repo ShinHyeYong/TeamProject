@@ -131,6 +131,7 @@ public class FragmentDrawer extends AppCompatActivity implements Drawer.OnDrawer
             finish();
         }
     }
+
     public void changeUserInfo(View view){
         Intent intent = new Intent(this, ChangeInfoActivity.class);
         startActivity(intent);
