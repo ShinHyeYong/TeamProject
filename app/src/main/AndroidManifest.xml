@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="intro.FragmentDrawer"
+            android:name="intro.BaseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="intro.SubActivity"

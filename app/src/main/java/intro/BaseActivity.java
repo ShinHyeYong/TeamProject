@@ -26,8 +26,8 @@ import utils.Constants;
 /**
  * Created by HY on 2016-11-09.
  */
-public class FragmentDrawer extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
-    private static String TAG = FragmentDrawer.class.getSimpleName();
+public class BaseActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
+    private static String TAG = BaseActivity.class.getSimpleName();
     /* Drawer */
     private AccountHeader header;
     private Drawer drawer;
@@ -37,14 +37,14 @@ public class FragmentDrawer extends AppCompatActivity implements Drawer.OnDrawer
 
     private View headerLayout;
 
-    public FragmentDrawer() {
+    public BaseActivity() {
 
     }
 
     @Override
     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
         Bundle args = new Bundle();
-        Intent intent = new Intent(FragmentDrawer.this, SubActivity.class);
+        Intent intent = new Intent(BaseActivity.this, SubActivity.class);
         if (drawerItem != null) {
             Fragment fragment = null;
             int index = (int) drawerItem.getIdentifier();
@@ -61,7 +61,6 @@ public class FragmentDrawer extends AppCompatActivity implements Drawer.OnDrawer
                     intent.putExtras(args);
                     startActivity(intent, args);
                     break;
-
                 case Constants.DRAWER_3_PAGE:
                     args.putInt(Constants.FRAGMENT_KEY, Constants.DRAWER_3_PAGE);
                     intent.putExtras(args);

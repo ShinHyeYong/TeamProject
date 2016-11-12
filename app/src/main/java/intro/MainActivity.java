@@ -17,7 +17,7 @@ import fragment.tab.MarketFragment;
 import fragment.tab.DonateFragment;
 import psj.hahaha.R;
 
-public class MainActivity extends FragmentDrawer implements ViewPager.OnPageChangeListener {
+public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     private ViewPager viewPager;
     private SmartTabLayout smartTabLayout;
@@ -94,18 +94,4 @@ public class MainActivity extends FragmentDrawer implements ViewPager.OnPageChan
         TextView tab_title = (TextView) linearLayout.getChildAt(0);
         tab_title.setTextColor(getResources().getColor(R.color.colorPrimary));
     }
-/*
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-        if(id==R.id.action_settings){
-            return  true;
-        }
-        return  super.onOptionsItemSelected(item);
-    }
-*/
 }

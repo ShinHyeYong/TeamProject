@@ -5,10 +5,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 import psj.hahaha.R;
+import utils.Element;
+import utils.adapter.ListViewAdapter;
 
 public class NoticeFragment extends Fragment {
+
+    private ListView listView;
+    ArrayList<Element> elements;
 
     public NoticeFragment() {
         // Required empty public constructor
@@ -30,7 +38,39 @@ public class NoticeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notice, container, false);
+        View view = inflater.inflate(R.layout.fragment_gather, container, false);
+
+        // 리스트뷰에 대한 세팅?선언
+        listView = (ListView) view.findViewById(R.id.listView);
+
+        // 예시로 요소가 두개인 경우로 할게용
+        setArrayList();
+
+        setListView();
+        return view;
+    }
+    private void setListView(){
+        // 리스트 뷰 세팅( 커스텀 리스트뷰어댑터 )
+        ListViewAdapter adapter = new ListViewAdapter(getActivity(), elements);
+
+        listView.setAdapter(adapter);
     }
 
+    private void setArrayList() {
+        // 어레이 리스트 초기화
+        elements = new ArrayList<>();
+
+        // 해당되는 어레이리스트에 요소 추가해주기
+        elements.add(new Element("공지사항1", "1995-07-19"));
+        elements.add(new Element("공지사항2", "1995-07-19"));
+        elements.add(new Element("공지사항3", "1995-07-19"));
+        elements.add(new Element("공지사항4", "1995-07-19"));
+        elements.add(new Element("공지사항5", "1995-07-19"));
+        elements.add(new Element("공지사항6", "1995-07-19"));
+        elements.add(new Element("공지사항7", "1995-07-19"));
+        elements.add(new Element("공지사항8", "1995-07-19"));
+        elements.add(new Element("공지사항9", "1995-07-19"));
+        elements.add(new Element("공지사항10", "1995-07-19"));
+        elements.add(new Element("공지사항11", "1995-07-19"));
+    }
 }
