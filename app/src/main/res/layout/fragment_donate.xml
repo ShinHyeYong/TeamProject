@@ -4,7 +4,7 @@
     android:id="@+id/fragment_donate"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragment.tab.DonateFragment">
+    tools:context="main.fragment.tab.DonateFragment">
 
     <TextView
         android:layout_width="match_parent"

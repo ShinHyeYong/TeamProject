@@ -5,7 +5,7 @@
     android:id="@+id/fragment_exchange"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragment.tab.ExchangeFragment">
+    tools:context="main.fragment.tab.ExchangeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

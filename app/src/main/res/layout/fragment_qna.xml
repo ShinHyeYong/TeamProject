@@ -3,9 +3,9 @@
     android:id="@+id/fragment_qna"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragment.drawer.QnaFragment">
+    tools:context="main.fragment.drawer.QnaFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO: Update blank main.fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

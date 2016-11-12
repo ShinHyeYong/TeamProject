@@ -1,4 +1,4 @@
-package fragment.drawer;
+package main.fragment.drawer;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 
 import psj.hahaha.R;
 
-public class HelpFragment extends Fragment {
+public class QnaFragment extends Fragment {
 
-    public HelpFragment() {
+    public QnaFragment() {
         // Required empty public constructor
     }
 
-    public static HelpFragment newInstance() {
-        HelpFragment fragment = new HelpFragment();
+    public static QnaFragment newInstance() {
+        QnaFragment fragment = new QnaFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -29,8 +29,8 @@ public class HelpFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_help, container, false);
+        // Inflate the layout for this main.fragment
+        return inflater.inflate(R.layout.fragment_qna, container, false);
     }
 
 }

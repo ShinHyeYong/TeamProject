@@ -1,4 +1,4 @@
-package fragment.tab;
+package main.fragment.tab;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -30,7 +30,7 @@ public class DonateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the layout for this main.fragment
         return inflater.inflate(R.layout.fragment_exchange, container, false);
     }
 

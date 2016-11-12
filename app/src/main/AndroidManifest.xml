@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="intro.MainActivity"
+            android:name="main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,16 +20,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="intro.BaseActivity"
+            android:name="main.BaseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="intro.SubActivity"
-            android:theme="@style/AppTheme" />
-        <activity android:name="dbconnected.LogInActivity" />
-        <activity android:name="dbconnected.SignInActivity" />
-        <activity android:name="listpage.WritePage" />
-        <activity android:name="listpage.ContentPage" />
-        <activity android:name="dbconnected.ChangeInfoActivity"></activity>
+            android:name="main.SubActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name="utils.dbconnected.LogInActivity" />
+        <activity android:name="utils.dbconnected.SignInActivity" />
+        <activity android:name="sub.listpage.WritePage" />
+        <activity android:name="sub.listpage.ContentPage" />
+        <activity android:name="utils.dbconnected.ChangeInfoActivity"></activity>
     </application>
 
 </manifest>

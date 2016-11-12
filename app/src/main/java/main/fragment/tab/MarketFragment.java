@@ -1,4 +1,4 @@
-package fragment.tab;
+package main.fragment.tab;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,17 +13,17 @@ import utils.Element;
 import utils.adapter.ListViewAdapter;
 import psj.hahaha.R;
 
-public class GatherFragment extends Fragment {
+public class MarketFragment extends Fragment {
 
     private ListView listView;
     ArrayList<Element> elements;
 
-    public GatherFragment() {
+    public MarketFragment() {
         // Required empty public constructor
     }
 
-    public static GatherFragment newInstance() {
-        GatherFragment fragment = new GatherFragment();
+    public static MarketFragment newInstance() {
+        MarketFragment fragment = new MarketFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -37,8 +37,8 @@ public class GatherFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_gather, container, false);
+        // Inflate the layout for this main.fragment
+        View view = inflater.inflate(R.layout.fragment_market, container, false);
 
         // 리스트뷰에 대한 세팅?선언
         listView = (ListView) view.findViewById(R.id.listView);
@@ -54,8 +54,8 @@ public class GatherFragment extends Fragment {
         // 리스트 뷰 세팅( 커스텀 리스트뷰어댑터 )
         ListViewAdapter adapter = new ListViewAdapter(getActivity(), elements);
 
-    listView.setAdapter(adapter);
-}
+        listView.setAdapter(adapter);
+    }
 
     private void setArrayList() {
         // 어레이 리스트 초기화

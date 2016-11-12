@@ -1,4 +1,4 @@
-package dbconnected;
+package utils.dbconnected;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,7 +18,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 
 import utils.model.UserInfo;
-import intro.MainActivity;
+import main.MainActivity;
 import psj.hahaha.R;
 
 public class ChangeInfoActivity extends AppCompatActivity {

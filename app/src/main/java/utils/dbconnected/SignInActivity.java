@@ -1,4 +1,4 @@
-package dbconnected;
+package utils.dbconnected;
 
 import android.app.ProgressDialog;
 import android.content.Intent;

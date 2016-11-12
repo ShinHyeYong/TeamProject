@@ -1,4 +1,4 @@
-package intro;
+package main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,10 +11,10 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
-import fragment.tab.GatherFragment;
-import fragment.tab.ExchangeFragment;
-import fragment.tab.MarketFragment;
-import fragment.tab.DonateFragment;
+import main.fragment.tab.GatherFragment;
+import main.fragment.tab.ExchangeFragment;
+import main.fragment.tab.MarketFragment;
+import main.fragment.tab.DonateFragment;
 import psj.hahaha.R;
 
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener {

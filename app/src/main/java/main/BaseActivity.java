@@ -1,4 +1,4 @@
-package intro;
+package main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +17,8 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
-import dbconnected.ChangeInfoActivity;
-import dbconnected.LogInActivity;
+import utils.dbconnected.ChangeInfoActivity;
+import utils.dbconnected.LogInActivity;
 import psj.hahaha.R;
 import utils.model.UserInfo;
 import utils.Constants;
@@ -92,10 +92,10 @@ public class BaseActivity extends AppCompatActivity implements Drawer.OnDrawerIt
 
         Button login_btn = (Button) layout.findViewById(R.id.login_btn);
         Button change_btn = (Button) layout.findViewById(R.id.userinfo_btn);
-        if(UserInfo.UserEntry.IS_LOGIN==true){
+        if (UserInfo.UserEntry.IS_LOGIN) {
             login_btn.setText("로그아웃");
             change_btn.setVisibility(View.VISIBLE);
-        }else if(UserInfo.UserEntry.IS_LOGIN==false){
+        } else {
             login_btn.setText("로그인");
             change_btn.setVisibility(View.GONE);
         }
@@ -112,28 +112,38 @@ public class BaseActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                         new SecondaryDrawerItem().withName("도움말").withIcon(R.drawable.ic_action_profile).withIdentifier(Constants.DRAWER_3_PAGE)
                 ).withOnDrawerItemClickListener(this).withSelectedItem(-1)
                 .withSavedInstance(args).withShowDrawerOnFirstLaunch(true).build();
+
     }
 
-    public void goToLogin(View view){
-        if(UserInfo.UserEntry.IS_LOGIN==true){
+    public void goToLogin(View view) {
+        if (UserInfo.UserEntry.IS_LOGIN) {
             UserInfo.UserEntry.USER_ID = null;
             UserInfo.UserEntry.USER_NAME = null;
             UserInfo.UserEntry.USER_PWD = null;
             UserInfo.UserEntry.IS_LOGIN = false;
-            Toast.makeText(this,"로그아웃 되었습니다.",Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this,MainActivity.class);
+            Toast.makeText(this, "로그아웃 되었습니다.", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
-        }else if(UserInfo.UserEntry.IS_LOGIN==false){
+        } else {
             Intent intent = new Intent(this, LogInActivity.class);
             startActivity(intent);
             finish();
         }
     }
 
-    public void changeUserInfo(View view){
+    public void changeUserInfo(View view) {
         Intent intent = new Intent(this, ChangeInfoActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen()) {
+            drawer.closeDrawer();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

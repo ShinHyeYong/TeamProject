@@ -1,29 +1,36 @@
-package fragment.tab;
+package main.fragment.tab;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import utils.dbconnected.LogInActivity;
+import sub.listpage.WritePage;
+import utils.model.UserInfo;
 import utils.Element;
 import utils.adapter.ListViewAdapter;
 import psj.hahaha.R;
 
-public class MarketFragment extends Fragment {
+public class ExchangeFragment extends Fragment implements View.OnClickListener{
 
     private ListView listView;
     ArrayList<Element> elements;
 
-    public MarketFragment() {
+    public ExchangeFragment() {
         // Required empty public constructor
     }
 
-    public static MarketFragment newInstance() {
-        MarketFragment fragment = new MarketFragment();
+    public static ExchangeFragment newInstance() {
+        ExchangeFragment fragment = new ExchangeFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -37,11 +44,13 @@ public class MarketFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_market, container, false);
+        // Inflate the layout for this main.fragment
+        View view = inflater.inflate(R.layout.fragment_exchange, container, false);
 
         // 리스트뷰에 대한 세팅?선언
         listView = (ListView) view.findViewById(R.id.listView);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
 
         // 예시로 요소가 두개인 경우로 할게용
         setArrayList();
@@ -55,6 +64,17 @@ public class MarketFragment extends Fragment {
         ListViewAdapter adapter = new ListViewAdapter(getActivity(), elements);
 
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+                                    long arg3) {
+
+                Toast.makeText(getActivity(), "Item clicked : " + position, Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
     }
 
     private void setArrayList() {
@@ -71,4 +91,17 @@ public class MarketFragment extends Fragment {
         elements.add(new Element("ㄹㄷㄴㅇ", "1995-07-19"));
         elements.add(new Element("ㅁㅈㄷㄹ", "1995-07-19"));
     }
+    
+    @Override
+    public void onClick(View v) {
+        if(UserInfo.UserEntry.IS_LOGIN == true) {
+            Intent intent = new Intent(getActivity(), WritePage.class);
+            startActivity(intent);
+        }else{
+            Intent intent = new Intent(getActivity(), LogInActivity.class);
+            startActivity(intent);
+        }
+        
+    }
 }
+
