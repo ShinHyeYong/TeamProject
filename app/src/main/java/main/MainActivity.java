@@ -21,18 +21,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private ViewPager viewPager;
     private SmartTabLayout smartTabLayout;
-//    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-/*
-        mToolbar=(Toolbar)findViewById(R.id.toolbar);
 
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-*/
         this.setNavigationDrawer(savedInstanceState);
         setFragment();
     }
@@ -55,7 +49,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             TextView tabTextView = (TextView) linearLayout.getChildAt(i);
             // 현재 선택된 부분의 글씨색
             if (i == position) {
-                tabTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tabTextView.setTextColor(getResources().getColor(R.color.navigationBarColor));
             } else {
                 tabTextView.setTextColor(getResources().getColor(R.color.colorAccent));
             }
@@ -92,6 +86,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
         final LinearLayout linearLayout = (LinearLayout) smartTabLayout.getChildAt(0);
         TextView tab_title = (TextView) linearLayout.getChildAt(0);
-        tab_title.setTextColor(getResources().getColor(R.color.colorPrimary));
+        tab_title.setTextColor(getResources().getColor(R.color.navigationBarColor));
     }
 }

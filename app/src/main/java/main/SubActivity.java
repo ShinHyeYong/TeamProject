@@ -37,7 +37,7 @@ public class SubActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, fragment).addToBackStack(null).commit();
         }else if(count == Constants.DRAWER_3_PAGE){
-            title.setText("질문");
+            title.setText("문의하기");
             Fragment fragment = QnaFragment.newInstance();
             fragment.setArguments(savedInstanceState);
             getSupportFragmentManager().beginTransaction()

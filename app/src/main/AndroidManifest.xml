@@ -10,8 +10,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- Splash activity -->
         <activity
-            android:name="main.MainActivity"
+            android:name="main.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,18 +21,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Main activity -->
+        <activity
+            android:name="main.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- Base activity -->
         <activity
             android:name="main.BaseActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="main.SubActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name="utils.dbconnected.LogInActivity" />
         <activity android:name="utils.dbconnected.SignInActivity" />
         <activity android:name="sub.listpage.WritePage" />
         <activity android:name="sub.listpage.ContentPage" />
-        <activity android:name="utils.dbconnected.ChangeInfoActivity"></activity>
+        <activity android:name="utils.dbconnected.ChangeInfoActivity" />
     </application>
 
 </manifest>
