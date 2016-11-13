@@ -9,7 +9,7 @@ import psj.hahaha.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private final int SPLASH_TIME_OUT=10000;
+    private final int SPLASH_TIME_OUT=3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

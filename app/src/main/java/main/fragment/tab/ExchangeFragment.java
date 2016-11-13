@@ -97,9 +97,11 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
         if(UserInfo.UserEntry.IS_LOGIN == true) {
             Intent intent = new Intent(getActivity(), WritePage.class);
             startActivity(intent);
+            getActivity().finish();
         }else{
             Intent intent = new Intent(getActivity(), LogInActivity.class);
             startActivity(intent);
+            getActivity().finish();
         }
         
     }

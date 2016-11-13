@@ -96,7 +96,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else if (result.equalsIgnoreCase("failure")) {
-                    Toast.makeText(getApplicationContext(), "오류났네요.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "정보변경 오류.", Toast.LENGTH_LONG).show();
                 }
             }
         }
