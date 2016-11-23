@@ -16,6 +16,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import main.MainActivity;
 import psj.hahaha.R;
 
 public class SignInActivity extends AppCompatActivity {
@@ -108,7 +109,7 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
     public void signin_act_back(View view){
-        Intent intent = new Intent(this,LogInActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }

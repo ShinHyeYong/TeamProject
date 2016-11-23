@@ -43,6 +43,12 @@
             android:inputType="textPassword" />
 
     </LinearLayout>
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/login_auto"
+        android:text="자동 로그인"
+        android:checked="true"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -57,10 +63,5 @@
             android:text="취소"
             android:onClick="goBack"/>
     </LinearLayout>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="회원가입"
-        android:onClick="login_act_signin"/>
 
 </LinearLayout>

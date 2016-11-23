@@ -2,6 +2,7 @@ package utils.dbconnected;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         TextView idtv = (TextView) findViewById(R.id.change_id);
         idtv.setText(UserInfo.UserEntry.USER_ID);
         EditText nameet = (EditText) findViewById(R.id.change_name);
+        nameet.setText(UserInfo.UserEntry.USER_NAME);
 
     }
 
@@ -92,6 +94,11 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 loading.dismiss();
                 if (result.equalsIgnoreCase("success")) {
                     Toast.makeText(getApplicationContext(), "정보 변경이 완료되었습니다.", Toast.LENGTH_LONG).show();
+                    SharedPreferences sp = getSharedPreferences("autologin", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("name", UserInfo.UserEntry.USER_NAME);
+                    editor.putString("pwd", UserInfo.UserEntry.USER_PWD);
+                    editor.commit();
                     Intent intent = new Intent(ChangeInfoActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();

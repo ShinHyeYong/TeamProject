@@ -39,7 +39,13 @@
             android:layout_height="wrap_content"
             android:text="사용자 정보 변경"
             android:onClick="changeUserInfo"
-            android:id="@+id/userinfo_btn"/>
+            android:id="@+id/changeuserinfo_btn"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="회원가입"
+            android:id="@+id/signin_btn"
+            android:onClick="signin"/>
     </LinearLayout>
 
 </LinearLayout>

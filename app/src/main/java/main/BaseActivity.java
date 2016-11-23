@@ -1,6 +1,7 @@
 package main;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -17,11 +18,12 @@ import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import psj.hahaha.R;
+import utils.Constants;
 import utils.dbconnected.ChangeInfoActivity;
 import utils.dbconnected.LogInActivity;
-import psj.hahaha.R;
+import utils.dbconnected.SignInActivity;
 import utils.model.UserInfo;
-import utils.Constants;
 
 /**
  * Created by HY on 2016-11-09.
@@ -79,6 +81,17 @@ public class BaseActivity extends AppCompatActivity implements Drawer.OnDrawerIt
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.fragment_navigation_drawer);
+
+        SharedPreferences sp = getSharedPreferences("autologin", MODE_PRIVATE);
+        UserInfo.UserEntry.USER_ID = sp.getString("id", UserInfo.UserEntry.USER_ID);
+        UserInfo.UserEntry.USER_NAME = sp.getString("name", UserInfo.UserEntry.USER_NAME);
+        UserInfo.UserEntry.USER_PWD = sp.getString("pwd", UserInfo.UserEntry.USER_PWD);
+        if(UserInfo.UserEntry.USER_ID!=null)
+            UserInfo.UserEntry.IS_LOGIN = true;
+        else
+            UserInfo.UserEntry.IS_LOGIN = false;
+
+
     }
 
     protected void setNavigationDrawer(Bundle args) {
@@ -90,14 +103,17 @@ public class BaseActivity extends AppCompatActivity implements Drawer.OnDrawerIt
 
         View layout = getLayoutInflater().inflate(R.layout.fragment_navigation_drawer, null);
 
+        Button signin_btn = (Button) layout.findViewById(R.id.signin_btn);
         Button login_btn = (Button) layout.findViewById(R.id.login_btn);
-        Button change_btn = (Button) layout.findViewById(R.id.userinfo_btn);
+        Button change_btn = (Button) layout.findViewById(R.id.changeuserinfo_btn);
         if (UserInfo.UserEntry.IS_LOGIN) {
             login_btn.setText("로그아웃");
             change_btn.setVisibility(View.VISIBLE);
+            signin_btn.setVisibility(View.GONE);
         } else {
             login_btn.setText("로그인");
             change_btn.setVisibility(View.GONE);
+            signin_btn.setVisibility(View.VISIBLE);
         }
 
         headerLayout = layout;
@@ -121,6 +137,15 @@ public class BaseActivity extends AppCompatActivity implements Drawer.OnDrawerIt
             UserInfo.UserEntry.USER_NAME = null;
             UserInfo.UserEntry.USER_PWD = null;
             UserInfo.UserEntry.IS_LOGIN = false;
+
+            SharedPreferences sp = getSharedPreferences("autologin", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("id", UserInfo.UserEntry.USER_ID);
+            editor.putString("name", UserInfo.UserEntry.USER_NAME);
+            editor.putString("pwd", UserInfo.UserEntry.USER_PWD);
+            editor.putBoolean("islogin",UserInfo.UserEntry.IS_LOGIN);
+            editor.commit();
+
             Toast.makeText(this, "로그아웃 되었습니다.", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -130,6 +155,11 @@ public class BaseActivity extends AppCompatActivity implements Drawer.OnDrawerIt
             startActivity(intent);
             finish();
         }
+    }
+    public void signin(View view){
+        Intent intent = new Intent(this,SignInActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void changeUserInfo(View view) {
