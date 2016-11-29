@@ -30,11 +30,22 @@
         android:gravity="top"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:hint="내용을 입력하세요"
         android:background="@drawable/xml_border"
         android:inputType="text|textMultiLine"
         android:layout_weight="0.90" />
+
+    <Button
+        android:text="Image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/image"
+        android:onClick="attachImage"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"

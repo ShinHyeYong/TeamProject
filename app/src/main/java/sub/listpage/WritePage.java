@@ -24,6 +24,7 @@ public class WritePage extends Activity {
     public void goMain(View v){
 
         Intent mainIntent = new Intent(WritePage.this, MainActivity.class);
+        mainIntent.putExtra("write","ex");
         startActivity(mainIntent);
         finish();
     }
@@ -38,5 +39,10 @@ public class WritePage extends Activity {
         contentIntent.putExtra("main",eMain.getText().toString());
         startActivity(contentIntent);
         finish();
+    }
+
+    //이미지 첨부(사진 or 앨범)
+    public void attachImage(View v){
+
     }
 }

@@ -87,5 +87,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         final LinearLayout linearLayout = (LinearLayout) smartTabLayout.getChildAt(0);
         TextView tab_title = (TextView) linearLayout.getChildAt(0);
         tab_title.setTextColor(getResources().getColor(R.color.navigationBarColor));
+
+        //탭이동 설정
+        if(getIntent().getStringExtra("write")!=null && getIntent().getStringExtra("write").equals("ex")){
+            viewPager.setCurrentItem(1);
+        }
+
     }
 }

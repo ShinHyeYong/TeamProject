@@ -3,6 +3,7 @@ package sub.listpage;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import psj.hahaha.R;
@@ -27,6 +28,11 @@ public class ContentPage extends Activity {
 
         titleTv.setText(titleValue);
         mainTv.setText(mainValue);
+
+    }
+
+    //코멘터리
+    public void writeComment(View v){
 
     }
 }
