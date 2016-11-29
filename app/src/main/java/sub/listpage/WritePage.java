@@ -41,6 +41,14 @@ public class WritePage extends Activity {
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        Intent Mainintent = new Intent(WritePage.this, MainActivity.class);
+        Mainintent.putExtra("write","ex");
+        startActivity(Mainintent);
+    }
+
     //이미지 첨부(사진 or 앨범)
     public void attachImage(View v){
 
