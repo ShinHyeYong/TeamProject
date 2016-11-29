@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import main.MainActivity;
 import psj.hahaha.R;
@@ -33,8 +34,12 @@ public class WritePage extends Activity {
     public void goContent(View v){
 
         Intent contentIntent = new Intent(WritePage.this, ContentPage.class);
+        //제목
         EditText eTitle = (EditText) findViewById(R.id.editTitle);
+        //본문
         EditText eMain = (EditText) findViewById(R.id.editMain);
+        //이미지
+        ImageView eImage = (ImageView) findViewById(R.id.imageWrite);
         contentIntent.putExtra("title",eTitle.getText().toString());
         contentIntent.putExtra("main",eMain.getText().toString());
         startActivity(contentIntent);

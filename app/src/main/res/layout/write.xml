@@ -23,29 +23,28 @@
             android:id="@+id/editTitle"
             />
     </LinearLayout>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="315dp"
-        android:id="@+id/editMain"
-        android:gravity="top"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
-        android:hint="내용을 입력하세요"
-        android:background="@drawable/xml_border"
-        android:inputType="text|textMultiLine"
-        android:layout_weight="0.90" />
 
-    <Button
-        android:text="Image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:id="@+id/image"
-        android:onClick="attachImage"
-        />
+    <ImageView
+           android:layout_width="150dp"
+           android:layout_height="180dp"
+           android:layout_gravity="center"
+           android:id="@+id/imageWrite"
+           android:onClick="attachImage"
+           android:src="@drawable/camera"
+    />
+
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="315dp"
+            android:id="@+id/editMain"
+            android:gravity="top"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:hint="내용을 입력하세요"
+            android:background="@drawable/xml_border"
+            android:inputType="text|textMultiLine"
+            android:layout_weight="0.90" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,6 +58,7 @@
             android:layout_width="136dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="40dp"
+            android:layout_marginBottom="10dp"
             android:onClick="goContent"
             android:textColor="#FFFFFF"
             android:background="#9adfff"
@@ -68,6 +68,7 @@
             android:text="취소"
             android:layout_width="136dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:textColor="#FFFFFF"
             android:onClick="goMain"
             android:background="#9adfff"

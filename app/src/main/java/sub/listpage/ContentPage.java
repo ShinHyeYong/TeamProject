@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import psj.hahaha.R;
@@ -23,16 +24,21 @@ public class ContentPage extends Activity {
         String titleValue = intent.getStringExtra("title");
         String mainValue = intent.getStringExtra("main");
 
+        //제목
         TextView titleTv = (TextView) findViewById(R.id.titleTV);
+        //본문
         TextView mainTv = (TextView) findViewById(R.id.mainTV);
 
         titleTv.setText(titleValue);
         mainTv.setText(mainValue);
 
+        //본문 이미지
+        ImageView cImage = (ImageView) findViewById(R.id.imageContent);
+
     }
 
-    //코멘터리
-    public void writeComment(View v){
+    //코멘터리 전송
+    public void submitComment(View v){
 
     }
 }
