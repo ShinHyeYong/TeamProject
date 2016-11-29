@@ -2,29 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="psj.hahaha">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
-
-    <permission
-        android:name="org.androidtown.lbs.map.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" />
-
-    <!-- 구글맵 API v2의 권한 설정 -->
-    <uses-permission android:name="org.androidtown.lbs.map.permission.MAPS_RECEIVE" />
 
     <!-- 구글맵 API v2의 일반 권한 설정. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <!-- 일반 권한 설정 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
 
     <application
