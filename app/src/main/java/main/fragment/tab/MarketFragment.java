@@ -1,19 +1,25 @@
 package main.fragment.tab;
 
+import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import sub.listpage.WritePage;
 import utils.Element;
 import utils.adapter.ListViewAdapter;
 import psj.hahaha.R;
+import utils.dbconnected.LogInActivity;
+import utils.model.UserInfo;
 
-public class MarketFragment extends Fragment {
+public class MarketFragment extends Fragment implements View.OnClickListener{
 
     private ListView listView;
     ArrayList<Element> elements;
@@ -39,7 +45,8 @@ public class MarketFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this main.fragment
         View view = inflater.inflate(R.layout.fragment_market, container, false);
-
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
         // 리스트뷰에 대한 세팅?선언
         listView = (ListView) view.findViewById(R.id.listView);
 
@@ -70,5 +77,14 @@ public class MarketFragment extends Fragment {
         elements.add(new Element("ㄹㄷㄴㅁ", "1995-07-19"));
         elements.add(new Element("ㄹㄷㄴㅇ", "1995-07-19"));
         elements.add(new Element("ㅁㅈㄷㄹ", "1995-07-19"));
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(UserInfo.UserEntry.IS_LOGIN == true) {
+            Toast.makeText(getActivity(),"Market Fragment",Toast.LENGTH_LONG).show();
+        }else{
+
+        }
     }
 }
