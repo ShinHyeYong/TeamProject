@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_sign_in"
     android:layout_width="match_parent"
@@ -7,84 +7,144 @@
     android:orientation="vertical"
     tools:context="utils.dbconnected.SignInActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="회원가입"/>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="ID (학번) : " />
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/signin_id"
-            android:hint="                      "
-            android:inputType="number"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="이름 : " />
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/signin_name"
-            android:hint="                      "/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="비밀번호 : " />
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/signin_password"
-            android:hint="                      "
-            android:inputType="textPassword"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="비밀번호 확인 : " />
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/signin_password_check"
-            android:hint="                      "
-            android:inputType="textPassword"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/relativeLayout9">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="회원가입"
-            android:onClick="singin_act_signin"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:background="#9adfff"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
             android:text="취소"
-            android:onClick="signin_act_back"/>
-    </LinearLayout>
-</LinearLayout>
+            android:onClick="signin_act_back"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="50dp"
+            android:id="@+id/button7" />
+
+        <Button
+            android:background="#9adfff"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:text="회원가입"
+            android:onClick="singin_act_signin"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="50dp"
+            android:id="@+id/button8" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_above="@+id/relativeLayout9"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="50dp"
+        android:id="@+id/relativeLayout10">
+        <TextView
+            android:layout_marginStart="11dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호 확인"
+            android:id="@+id/textView9" />
+
+        <EditText
+            android:paddingStart="11dp"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/signin_password_check"
+            android:hint=" "
+            android:inputType="textPassword"
+            android:layout_below="@+id/textView9"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_above="@+id/relativeLayout10"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="50dp"
+        android:id="@+id/relativeLayout11">
+        <TextView
+            android:layout_marginStart="11dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호"
+            android:id="@+id/textView11" />
+
+        <EditText
+            android:paddingStart="11dp"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/signin_password"
+            android:hint=" "
+            android:inputType="textPassword"
+            android:layout_below="@+id/textView11"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_above="@+id/relativeLayout11"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="50dp"
+        android:id="@+id/relativeLayout12">
+        <TextView
+            android:layout_marginStart="11dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이름"
+            android:id="@+id/textView12" />
+
+        <EditText
+            android:paddingStart="11dp"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/signin_name"
+            android:hint=" "
+            android:layout_below="@+id/textView12"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_above="@+id/relativeLayout12"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="50dp">
+        <TextView
+            android:layout_marginStart="11dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ID(학번)"
+            android:id="@+id/textView13" />
+
+        <EditText
+            android:paddingStart="11dp"
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/signin_id"
+            android:hint=" "
+            android:inputType="number"
+            android:layout_below="@+id/textView13"
+            android:layout_alignParentStart="true" />
+    </RelativeLayout>
+</RelativeLayout>
