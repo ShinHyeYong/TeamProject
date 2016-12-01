@@ -44,7 +44,7 @@ public class LogInActivity extends AppCompatActivity {
         CheckBox cb = (CheckBox) findViewById(R.id.login_auto);
         check_auto = cb.isChecked();
 
-        if(!id.equals("")&&!pwd.equals("")){
+        if(!id.trim().equals("")&&!pwd.trim().equals("")){
             class LoginAsync extends AsyncTask<String, Void, String> {
 
                 ProgressDialog loading;

@@ -90,8 +90,6 @@ public class BaseActivity extends AppCompatActivity implements Drawer.OnDrawerIt
             UserInfo.UserEntry.IS_LOGIN = true;
         else
             UserInfo.UserEntry.IS_LOGIN = false;
-
-
     }
 
     protected void setNavigationDrawer(Bundle args) {

@@ -1,27 +1,37 @@
 package main.fragment.tab;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
-import utils.dbconnected.LogInActivity;
+import psj.hahaha.R;
+import sub.listpage.ContentPage;
 import sub.listpage.WritePage;
-import utils.model.UserInfo;
 import utils.Element;
 import utils.adapter.ListViewAdapter;
-import psj.hahaha.R;
+import utils.dbconnected.LogInActivity;
+import utils.model.UserInfo;
 
 public class ExchangeFragment extends Fragment implements View.OnClickListener{
-
+    String URL="http://210.91.76.33:8080/context/getexchangelist.php";
     private ListView listView;
     ArrayList<Element> elements;
 
@@ -47,13 +57,15 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this main.fragment
         View view = inflater.inflate(R.layout.fragment_exchange, container, false);
 
+        elements = new ArrayList<>();
+        GetEListAsync task = new GetEListAsync();
+        task.execute();
+
         // 리스트뷰에 대한 세팅?선언
         listView = (ListView) view.findViewById(R.id.listView);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(this);
 
-        // 예시로 요소가 두개인 경우로 할게용
-        setArrayList();
 
         setListView();
         return view;
@@ -69,33 +81,20 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position,
                                     long arg3) {
-
-                Toast.makeText(getActivity(), "Item clicked : " + position, Toast.LENGTH_SHORT).show();
-
+                Intent i = new Intent(getActivity(),ContentPage.class);
+                i.putExtra("fragmentType","exchange");
+                i.putExtra("contentnum",String.valueOf(elements.size()-position-1));
+                startActivity(i);
             }
 
         });
     }
 
-    private void setArrayList() {
-        // 어레이 리스트 초기화
-        elements = new ArrayList<>();
-
-        // 해당되는 어레이리스트에 요소 추가해주기
-        elements.add(new Element("ㅁㅈㄷㄹ", "1995-07-19"));
-        elements.add(new Element("ㄹㄷㄴㅁ", "1995-07-19"));
-        elements.add(new Element("ㄹㄷㄴㅇ", "1995-07-19"));
-        elements.add(new Element("ㅁㅈㄷㄹ", "1995-07-19"));
-        elements.add(new Element("ㅁㅈㄷㄹ", "1995-07-19"));
-        elements.add(new Element("ㄹㄷㄴㅁ", "1995-07-19"));
-        elements.add(new Element("ㄹㄷㄴㅇ", "1995-07-19"));
-        elements.add(new Element("ㅁㅈㄷㄹ", "1995-07-19"));
-    }
-    
     @Override
     public void onClick(View v) {
         if(UserInfo.UserEntry.IS_LOGIN == true) {
             Intent intent = new Intent(getActivity(), WritePage.class);
+            intent.putExtra("fragmentType","exchange");
             startActivity(intent);
             getActivity().finish();
         }else{
@@ -103,7 +102,59 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
             startActivity(intent);
             getActivity().finish();
         }
-        
+    }
+
+    class GetEListAsync extends AsyncTask<String, Void, String> {
+        ProgressDialog loading;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = ProgressDialog.show(getActivity(), "잠시만요.", "로딩중...");
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                java.net.URL url = new URL(URL);
+
+                URLConnection conn = url.openConnection();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+                return sb.toString();
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            loading.dismiss();
+            if (!result.equalsIgnoreCase("failure")) {
+                try {
+                    JSONObject root = new JSONObject(result);
+
+                    JSONArray ja = root.getJSONArray("result");
+                    if(ja.length()!=0) {
+                        for(int i=ja.length()-1;i>=0;i--){
+                            elements.add(new Element(ja.getJSONObject(i).getString("title"), ja.getJSONObject(i).getString("time")));
+                        }
+                    }
+                }catch(JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
 

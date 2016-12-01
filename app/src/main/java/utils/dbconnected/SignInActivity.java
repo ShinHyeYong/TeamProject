@@ -36,7 +36,7 @@ public class SignInActivity extends AppCompatActivity {
         String pwd = et.getText().toString();
         et = (EditText) findViewById(R.id.signin_password_check);
         String pwd_check = et.getText().toString();
-        if(!id.equals("")&&!name.equals("")&&!pwd.equals("")&&pwd.equals(pwd_check)){
+        if(!id.trim().equals("")&&!name.trim().equals("")&&!pwd.trim().equals("")&&pwd.equals(pwd_check)){
             class InsertData extends AsyncTask<String, Void, String> {
                 ProgressDialog loading;
                 @Override
