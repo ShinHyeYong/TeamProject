@@ -1,8 +1,6 @@
 package main.fragment.tab;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -49,6 +47,9 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        elements = new ArrayList<>();
+        GetEListThread thread = new GetEListThread();
+        thread.start();
     }
 
     @Override
@@ -57,24 +58,19 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this main.fragment
         View view = inflater.inflate(R.layout.fragment_exchange, container, false);
 
-        elements = new ArrayList<>();
-        GetEListAsync task = new GetEListAsync();
-        task.execute();
-
         // 리스트뷰에 대한 세팅?선언
-        listView = (ListView) view.findViewById(R.id.listView);
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        listView = (ListView) view.findViewById(R.id.elistView);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.efab);
         fab.setOnClickListener(this);
 
-
         setListView();
+
         return view;
     }
 
     private void setListView(){
         // 리스트 뷰 세팅( 커스텀 리스트뷰어댑터 )
         ListViewAdapter adapter = new ListViewAdapter(getActivity(), elements);
-
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -85,6 +81,7 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
                 i.putExtra("fragmentType","exchange");
                 i.putExtra("contentnum",String.valueOf(elements.size()-position-1));
                 startActivity(i);
+                getActivity().finish();
             }
 
         });
@@ -104,17 +101,10 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    class GetEListAsync extends AsyncTask<String, Void, String> {
-        ProgressDialog loading;
 
+    class GetEListThread extends Thread{
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            loading = ProgressDialog.show(getActivity(), "잠시만요.", "로딩중...");
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
+        public void run(){
             try {
                 java.net.URL url = new URL(URL);
 
@@ -130,29 +120,24 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
                     sb.append(line);
                     break;
                 }
-                return sb.toString();
-            } catch (Exception e) {
-                return new String("Exception: " + e.getMessage());
-            }
-        }
 
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            loading.dismiss();
-            if (!result.equalsIgnoreCase("failure")) {
-                try {
-                    JSONObject root = new JSONObject(result);
+                String result =  sb.toString();
+                if (!result.equalsIgnoreCase("failure")) {
+                    try {
+                        JSONObject root = new JSONObject(result);
 
-                    JSONArray ja = root.getJSONArray("result");
-                    if(ja.length()!=0) {
-                        for(int i=ja.length()-1;i>=0;i--){
-                            elements.add(new Element(ja.getJSONObject(i).getString("title"), ja.getJSONObject(i).getString("time")));
+                        JSONArray ja = root.getJSONArray("result");
+                        if(ja.length()!=0) {
+                            for(int i=ja.length()-1;i>=0;i--){
+                                elements.add(new Element(ja.getJSONObject(i).getString("title"), ja.getJSONObject(i).getString("time")));
+                            }
                         }
+                    }catch(JSONException e){
+                        e.printStackTrace();
                     }
-                }catch(JSONException e){
-                    e.printStackTrace();
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

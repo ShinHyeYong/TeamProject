@@ -41,7 +41,7 @@ public class GatherFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_gather, container, false);
 
         // 리스트뷰에 대한 세팅?선언
-        listView = (ListView) view.findViewById(R.id.listView);
+        listView = (ListView) view.findViewById(R.id.glistView);
 
         // 예시로 요소가 두개인 경우로 할게용
         setArrayList();

@@ -71,7 +71,10 @@ public class WritePage extends Activity {
     public void goMain(View v){
 
         Intent mainIntent = new Intent(WritePage.this, MainActivity.class);
-        mainIntent.putExtra("write","ex");
+        if(fragmentType.equals("market"))
+            mainIntent.putExtra("write","mk");
+        else
+            mainIntent.putExtra("write","ex");
         startActivity(mainIntent);
         finish();
     }
@@ -115,6 +118,7 @@ public class WritePage extends Activity {
         Intent Mainintent = new Intent(WritePage.this, MainActivity.class);
         Mainintent.putExtra("write","ex");
         startActivity(Mainintent);
+        finish();
     }
 
     @Override

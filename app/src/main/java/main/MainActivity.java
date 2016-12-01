@@ -21,6 +21,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
     private ViewPager viewPager;
     private SmartTabLayout smartTabLayout;
+    FragmentPagerAdapter viewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private void setFragment() {
 
         // 각 페이지에 대한 프레그먼트(아이템 세팅 해 주는 부분)
-        FragmentPagerAdapter viewAdapter = new FragmentPagerItemAdapter(
+        viewAdapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add("모여라", GatherFragment.class)
                 .add("교환", ExchangeFragment.class)
@@ -91,6 +92,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         //탭이동 설정
         if(getIntent().getStringExtra("write")!=null && getIntent().getStringExtra("write").equals("ex")){
             viewPager.setCurrentItem(1);
+        }else if(getIntent().getStringExtra("write")!=null && getIntent().getStringExtra("write").equals("mk")){
+            viewPager.setCurrentItem(2);
         }
 
     }

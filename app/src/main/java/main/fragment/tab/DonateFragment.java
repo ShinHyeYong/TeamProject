@@ -64,7 +64,7 @@ public class DonateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_donate, container, false);
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.dfab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {        //현재는 +를 누르면 현재위치가 맵에 표시되게. 더 기능 필요
@@ -112,8 +112,6 @@ public class DonateFragment extends Fragment {
 
         return view;
     }
-
-
 
 
     public void getPosition(){

@@ -54,10 +54,13 @@ public class ContentPage extends Activity {
 
     @Override
     public void onBackPressed() {
-        finish();
         Intent Mainintent = new Intent(ContentPage.this, MainActivity.class);
-        Mainintent.putExtra("write","ex");
+        if(fragmentType.equals("market"))
+            Mainintent.putExtra("write","mk");
+        else
+            Mainintent.putExtra("write","ex");
         startActivity(Mainintent);
+        finish();
     }
 
 
