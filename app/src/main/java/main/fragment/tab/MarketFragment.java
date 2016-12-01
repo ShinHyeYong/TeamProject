@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import psj.hahaha.R;
 import sub.listpage.ContentPage;
 import sub.listpage.WritePage;
+import utils.Constants;
 import utils.Element;
 import utils.adapter.ListViewAdapter;
 import utils.dbconnected.LogInActivity;
@@ -49,7 +50,7 @@ public class MarketFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         elements = new ArrayList<>();
         GetMListThread thread = new GetMListThread();
-        thread.start();
+        Constants.tpexecutor.execute(thread);
     }
 
     @Override
