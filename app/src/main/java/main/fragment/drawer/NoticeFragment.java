@@ -33,7 +33,6 @@ public class NoticeFragment extends Fragment{
     }
 
     public NoticeFragment() {
-        // Required empty public constructor
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
