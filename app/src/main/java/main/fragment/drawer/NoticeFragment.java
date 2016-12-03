@@ -6,7 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -15,14 +18,12 @@ import psj.hahaha.R;
 import utils.Element;
 import utils.adapter.ListViewAdapter;
 
-public class NoticeFragment extends Fragment implements AdapterView.OnItemClickListener{
+public class NoticeFragment extends Fragment{
 
-    private ListView listView;
-    ArrayList<Element> elements;
-
-    public NoticeFragment() {
-        // Required empty public constructor
-    }
+    View rootView;
+    ExpandableListView lv;
+    private String[] groups;
+    private String[][] children;
 
     public static NoticeFragment newInstance() {
         NoticeFragment fragment = new NoticeFragment();
@@ -31,56 +32,129 @@ public class NoticeFragment extends Fragment implements AdapterView.OnItemClickL
         return fragment;
     }
 
+    public NoticeFragment() {
+        // Required empty public constructor
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        groups = new String[] { "보물 찾기 기능이 추가되었습니다!", "옹이농장이 개장되었습니다!" };
+
+        children = new String [][] {
+                { "이 학교의 모든 식권을 이곳에 숨겨놓았다..!                                    보물찾기 기능이 추가되었습니다. 보물을 숨기고 보물을 찾는 해적왕이 되어보세욧!"},
+                { "옹이 농장에 오신 모든 여러분을 환영합니다!"},
+                };
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this main.fragment
-        View view = inflater.inflate(R.layout.fragment_gather, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.fragment_notice, container, false);
 
-        // 리스트뷰에 대한 세팅?선언
-        listView = (ListView) view.findViewById(R.id.listView);
-
-        // 예시로 요소가 두개인 경우로 할게용
-        setArrayList();
-
-        setListView();
-
-        listView.setOnItemClickListener(this);
-        return view;
+        return rootView;
     }
-
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getActivity(), position + " 번째 글 클릭 하엿읍니다", Toast.LENGTH_SHORT).show();
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        lv = (ExpandableListView) view.findViewById(R.id.expListView);
+        lv.setAdapter(new ExpandableListAdapter(groups, children));
+        lv.setGroupIndicator(null);
+
     }
 
-    private void setListView(){
-        // 리스트 뷰 세팅( 커스텀 리스트뷰어댑터 )
-        ListViewAdapter adapter = new ListViewAdapter(getActivity(), elements);
+    public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
-        listView.setAdapter(adapter);
-    }
+        private final LayoutInflater inf;
+        private String[] groups;
+        private String[][] children;
 
-    private void setArrayList() {
-        // 어레이 리스트 초기화
-        elements = new ArrayList<>();
+        public ExpandableListAdapter(String[] groups, String[][] children) {
+            this.groups = groups;
+            this.children = children;
+            inf = LayoutInflater.from(getActivity());
+        }
 
-        // 해당되는 어레이리스트에 요소 추가해주기
-        elements.add(new Element("공지사항1", "1995-07-19"));
-        elements.add(new Element("공지사항2", "1995-07-19"));
-        elements.add(new Element("공지사항3", "1995-07-19"));
-        elements.add(new Element("공지사항4", "1995-07-19"));
-        elements.add(new Element("공지사항5", "1995-07-19"));
-        elements.add(new Element("공지사항6", "1995-07-19"));
-        elements.add(new Element("공지사항7", "1995-07-19"));
-        elements.add(new Element("공지사항8", "1995-07-19"));
-        elements.add(new Element("공지사항9", "1995-07-19"));
-        elements.add(new Element("공지사항10", "1995-07-19"));
-        elements.add(new Element("공지사항11", "1995-07-19"));
+        @Override
+        public int getGroupCount() {
+            return groups.length;
+        }
+
+        @Override
+        public int getChildrenCount(int groupPosition) {
+            return children[groupPosition].length;
+        }
+
+        @Override
+        public Object getGroup(int groupPosition) {
+            return groups[groupPosition];
+        }
+
+        @Override
+        public Object getChild(int groupPosition, int childPosition) {
+            return children[groupPosition][childPosition];
+        }
+
+        @Override
+        public long getGroupId(int groupPosition) {
+            return groupPosition;
+        }
+
+        @Override
+        public long getChildId(int groupPosition, int childPosition) {
+            return childPosition;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
+
+        @Override
+        public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = inf.inflate(R.layout.list_notice_item, parent, false);
+                holder = new ViewHolder();
+
+                holder.text = (TextView) convertView.findViewById(R.id.list_title);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            holder.text.setText(getChild(groupPosition, childPosition).toString());
+
+            return convertView;
+        }
+
+        @Override
+        public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+
+            if (convertView == null) {
+                convertView = inf.inflate(R.layout.list_group, parent, false);
+
+                holder = new ViewHolder();
+                holder.text = (TextView) convertView.findViewById(R.id.lblListHeader);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            holder.text.setText(getGroup(groupPosition).toString());
+
+            return convertView;
+        }
+
+        @Override
+        public boolean isChildSelectable(int groupPosition, int childPosition) {
+            return true;
+        }
+
+        private class ViewHolder {
+            TextView text;
+        }
     }
 }
