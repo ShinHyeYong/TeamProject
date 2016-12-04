@@ -121,9 +121,10 @@ public class BaseActivity extends AppCompatActivity implements Drawer.OnDrawerIt
                 .withToolbar(toolbar)
                 .withHeader(layout)
                 .addDrawerItems(
-                        new SecondaryDrawerItem().withName("공지사항").withIcon(R.drawable.ic_action_profile).withIdentifier(Constants.DRAWER_1_PAGE),
-                        new SecondaryDrawerItem().withName("도움말").withIcon(R.drawable.ic_action_profile).withIdentifier(Constants.DRAWER_2_PAGE),
-                        new SecondaryDrawerItem().withName("문의하기").withIcon(R.drawable.ic_action_profile).withIdentifier(Constants.DRAWER_3_PAGE)
+                        new SecondaryDrawerItem().withName("공지사항").withIdentifier(Constants.DRAWER_1_PAGE),
+                        new SecondaryDrawerItem().withName("도움말").withIdentifier(Constants.DRAWER_2_PAGE),
+                        new SecondaryDrawerItem().withName("문의하기").withIdentifier(Constants.DRAWER_3_PAGE)
+                        //new SecondaryDrawerItem().withName("문의하기").withIcon(R.drawable.ic_action_profile).withIdentifier(Constants.DRAWER_3_PAGE)
                 ).withOnDrawerItemClickListener(this).withSelectedItem(-1)
                 .withSavedInstance(args).withShowDrawerOnFirstLaunch(true).build();
 
