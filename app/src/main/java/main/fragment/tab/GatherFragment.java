@@ -74,7 +74,8 @@ public class GatherFragment extends Fragment implements View.OnClickListener {
         listView = (ListView) view.findViewById(R.id.glistView);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.gfab);
         fab.setOnClickListener(this);
-        arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,list_of_rooms);
+//        arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,list_of_rooms);
+        arrayAdapter = new ArrayAdapter<String>(getActivity(),R.layout.my_text_view,list_of_rooms);
 
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -135,7 +136,7 @@ public class GatherFragment extends Fragment implements View.OnClickListener {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
                     Map<String,Object> map = new HashMap<String, Object>();
-                    map.put("제목 :  " + input.getText().toString(),"");
+                    map.put("채팅방 :  " + input.getText().toString(),"");
                     root.updateChildren(map);
                     dialog.dismiss();
                 }

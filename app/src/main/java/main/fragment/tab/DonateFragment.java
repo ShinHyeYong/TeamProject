@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.identity.intents.Address;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,6 +33,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mikepenz.iconics.utils.Utils;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import main.MainActivity;
 import psj.hahaha.R;
@@ -88,6 +94,10 @@ public class DonateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_donate, container, false);
+
+
+
+
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.dfab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,8 +205,14 @@ public class DonateFragment extends Fragment {
                 googleMap.getUiSettings().setMapToolbarEnabled(false);
 
                 // Get LocationManager object from System Service LOCATION_SERVICE
-
-                LatLng MyongJi = new LatLng(37.2222614, 127.187636);
+                Geocoder geo = new Geocoder(getActivity(), Locale.KOREAN);
+                // Geocoder를 통한 위치확인
+                try{
+                    List<android.location.Address> addr = geo.getFromLocationName("명지대학교 자연캠퍼스", 2);
+                    lati = addr.get(0).getLatitude();
+                    longi = addr.get(0).getLongitude();
+                }catch (IOException e){}
+                LatLng MyongJi = new LatLng(lati, longi);
 
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(MyongJi).zoom(16).build();

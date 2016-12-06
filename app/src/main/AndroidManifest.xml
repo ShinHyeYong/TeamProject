@@ -59,6 +59,7 @@
         <!-- Base activity -->
         <activity
             android:name="main.BaseActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="main.SubActivity"

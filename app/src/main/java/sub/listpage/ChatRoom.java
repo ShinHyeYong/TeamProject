@@ -33,12 +33,12 @@ public class ChatRoom extends AppCompatActivity {
     private Button btn_send_msg;
     private EditText input_msg;
     private TextView chat_conversation;
-    private String chat_msg,chat_user_name;
+    private String chat_msg,chat_user_name, chat_time_stamp;
 
     private String user_name,room_name;
     private DatabaseReference root ;
     private String temp_key;
-    String timeStamp;
+    String time_stamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +63,15 @@ public class ChatRoom extends AppCompatActivity {
                 //채팅방 고유키 설정
                 temp_key = root.push().getKey();
                 root.updateChildren(map);
+                time_stamp = java.text.DateFormat.getTimeInstance().format(Calendar.getInstance().getTime());
 
                 //고유키를 바탕으로 데이터베이스 설정
                 DatabaseReference message_root = root.child(temp_key);
                 Map<String,Object> map2 = new HashMap<String, Object>();
                 map2.put("name",user_name);
                 map2.put("msg",input_msg.getText().toString());
+                map2.put("time",time_stamp);
+
                 input_msg.setText("");
                 message_root.updateChildren(map2);
             }
@@ -113,11 +116,12 @@ public class ChatRoom extends AppCompatActivity {
         Iterator i = dataSnapshot.getChildren().iterator();
 
         while (i.hasNext()){
-            timeStamp = java.text.DateFormat.getTimeInstance().format(Calendar.getInstance().getTime());
+
             chat_msg = (String) ((DataSnapshot)i.next()).getValue();
             chat_user_name = (String) ((DataSnapshot)i.next()).getValue();
+            chat_time_stamp = (String) ((DataSnapshot)i.next()).getValue();
 
-            chat_conversation.append(chat_user_name +" : "+chat_msg +" \n" +"("+timeStamp+")\n\n");
+            chat_conversation.append(chat_user_name +" : "+chat_msg +" \n("+chat_time_stamp+")\n\n");
 
         }
 
