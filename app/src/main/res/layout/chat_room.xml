@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/chat"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Button
+        android:text="입력"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/colorAccent"
+        android:layout_marginEnd="17dp"
+        app:backgroundTint="#9adfff"
+        android:id="@+id/btn_send" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textShortMessage"
+        android:hint="메시지 입력"
+        android:ems="10"
+        android:layout_alignTop="@+id/btn_send"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:id="@+id/msg_input" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/xml_border"
+        android:layout_above="@+id/btn_send"
+        android:layout_alignEnd="@+id/btn_send"
+        android:layout_alignStart="@+id/msg_input">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:text="☆★채팅방에 들어왔습니다☆★ \n채팅할 땐 서로 예의를 지켜주세요\n"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:id="@+id/textView15" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorAccent"
+                android:textSize="15dp"
+                android:id="@+id/chat_text" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
