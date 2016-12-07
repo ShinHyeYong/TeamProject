@@ -103,7 +103,6 @@ public class WritePage extends Activity {
         }
 
         Calendar c = Calendar.getInstance();
-
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String formattedDate = df.format(c.getTime());
 

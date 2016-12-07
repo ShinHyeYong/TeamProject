@@ -51,7 +51,9 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
         elements = new ArrayList<>();
         GetEListThread thread = new GetEListThread();
         Constants.tpexecutor.execute(thread);
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,7 +76,6 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
         ListViewAdapter adapter = new ListViewAdapter(getActivity(), elements);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position,
                                     long arg3) {

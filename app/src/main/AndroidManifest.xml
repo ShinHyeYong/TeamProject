@@ -2,22 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="psj.hahaha">
 
-
     <!-- 구글맵 API v2의 일반 권한 설정. -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <!-- 일반 권한 설정 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
-
 
     <application
         android:allowBackup="true"
@@ -50,7 +48,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-
         <!-- Main activity -->
         <activity
             android:name="main.MainActivity"
@@ -59,17 +56,20 @@
         <!-- Base activity -->
         <activity
             android:name="main.BaseActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name="main.SubActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name="utils.dbconnected.LogInActivity" />
         <activity android:name="utils.dbconnected.SignInActivity" />
         <activity android:name="sub.listpage.WritePage" />
-        <activity android:name="sub.listpage.ContentPage" />
-        <activity android:name="sub.listpage.ChatRoom"/>
+        <activity
+            android:name="sub.listpage.ContentPage"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name="sub.listpage.ChatRoom" />
         <activity android:name="utils.dbconnected.ChangeInfoActivity" />
+
     </application>
 
 </manifest>
