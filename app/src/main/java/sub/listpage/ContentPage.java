@@ -309,7 +309,6 @@ public class ContentPage extends Activity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            System.out.println(result);
             loading.dismiss();
             if (!result.equalsIgnoreCase("failure")) {
                 try {

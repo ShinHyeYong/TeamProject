@@ -34,13 +34,14 @@ import java.net.URLEncoder;
 
 import main.MainActivity;
 import psj.hahaha.R;
-import utils.adapter.RoundedImageHelper;
 import utils.model.UserInfo;
 
 public class ChangeInfoActivity extends AppCompatActivity {
     String URL="http://210.91.76.33:8080/user/changeinfo.php";
     Bitmap bitmap = null;
     ImageView img;
+    EditText nameet;
+    EditText pwdet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +50,9 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
         TextView idtv = (TextView) findViewById(R.id.change_id);
         idtv.setText(UserInfo.UserEntry.USER_ID);
-        EditText nameet = (EditText) findViewById(R.id.change_name);
+        nameet = (EditText) findViewById(R.id.change_name);
         nameet.setText(UserInfo.UserEntry.USER_NAME);
+        pwdet = (EditText) findViewById(R.id.change_password);
         img = (ImageView) findViewById(R.id.changeUserImage);
     }
 
@@ -111,6 +113,8 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 loading.dismiss();
                 if (result.equalsIgnoreCase("success")) {
                     Toast.makeText(getApplicationContext(), "정보 변경이 완료되었습니다.", Toast.LENGTH_LONG).show();
+                    UserInfo.UserEntry.USER_NAME = nameet.getText().toString();
+                    UserInfo.UserEntry.USER_PWD = pwdet.getText().toString();
                     SharedPreferences sp = getSharedPreferences("autologin", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("name", UserInfo.UserEntry.USER_NAME);
@@ -227,8 +231,6 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 String picturePath = c.getString(columnIndex);
                 c.close();
                 bitmap = (BitmapFactory.decodeFile(picturePath));
-
-                bitmap = RoundedImageHelper.getRoundedCornerBitmap(bitmap,100);
 
                 img.setImageBitmap(bitmap);
             }

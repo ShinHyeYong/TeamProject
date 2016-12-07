@@ -2,26 +2,27 @@ package main.fragment.tab;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.identity.intents.Address;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,20 +31,25 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.mikepenz.iconics.utils.Utils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import main.MainActivity;
 import psj.hahaha.R;
-
-import static android.R.attr.data;
-import static android.R.attr.onClick;
-import static android.R.attr.value;
+import utils.Constants;
 
 
 public class DonateFragment extends Fragment {
@@ -56,6 +62,10 @@ public class DonateFragment extends Fragment {
     ImageView imageView;
     Bitmap photo;
     String value;
+    String MAKEURL = "http://210.91.76.33:8080/marker/makemarker.php";
+    String GETURL = "http://210.91.76.33:8080/marker/getmarkers.php";
+    String GETTEXTURL = "http://210.91.76.33:8080/marker/getmarkertext.php";
+    ArrayList<String> markerList;
 
     static final int ACTION_REQUEST_CAMERA = 1;
 
@@ -88,15 +98,16 @@ public class DonateFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        markerList = new ArrayList<String>();
+        GetMarkersThread thread = new GetMarkersThread();
+        Constants.tpexecutor.execute(thread);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_donate, container, false);
-
-
-
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.dfab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +123,11 @@ public class DonateFragment extends Fragment {
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         value = input.getText().toString();
-                        getPosition();
+                        LatLng position = getPosition();
+
+                        MakeMarkAsync task =  new MakeMarkAsync();
+                        task.execute(value,String.valueOf(position.latitude),String.valueOf(position.longitude));
+
                         dialog.dismiss();
                     }
                 });
@@ -204,6 +219,11 @@ public class DonateFragment extends Fragment {
                 googleMap.setMyLocationEnabled(true);
                 googleMap.getUiSettings().setMapToolbarEnabled(false);
 
+                for(int i=0;i<markerList.size()-2;i+=3){
+                    googleMap.addMarker(new MarkerOptions().title(markerList.get(i+2)).position(new LatLng(Double.parseDouble(markerList.get(i)),Double.parseDouble(markerList.get(i+1)))));
+
+                }
+
                 // Get LocationManager object from System Service LOCATION_SERVICE
                 Geocoder geo = new Geocoder(getActivity(), Locale.KOREAN);
                 // Geocoder를 통한 위치확인
@@ -218,7 +238,6 @@ public class DonateFragment extends Fragment {
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(MyongJi).zoom(16).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-
             }
 
         });
@@ -229,11 +248,11 @@ public class DonateFragment extends Fragment {
 
 
 
-    public void getPosition(){
+    public LatLng getPosition(){
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            return;
+            return null;
         }
 
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
@@ -248,27 +267,7 @@ public class DonateFragment extends Fragment {
         CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosi).zoom(16).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        googleMap.setInfoWindowAdapter(new CustomInfoWindowAdapter());
-
-
-//        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-//
-//            public void onInfoWindowClick(Marker arg0) {
-//                AlertDialog alert2 = new AlertDialog.Builder(getActivity())
-//                        .setTitle("식권은 여기에")
-//                        .setMessage("식권왕 골드로져씀")
-//                        .setPositiveButton("OK",
-//                                new DialogInterface.OnClickListener() {
-//
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog,
-//                                                        int which) {
-//                                        dialog.dismiss();
-//                                    }
-//                                }).show();
-//            };
-//        });
-
+        return myPosi;
     }
 
     @Override
@@ -286,30 +285,7 @@ public class DonateFragment extends Fragment {
 
 
 
-    private class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter
-    {
-        @Override
-        public View getInfoWindow(Marker arg0)
-        {
-            View v = getActivity().getLayoutInflater().inflate(R.layout.mapinfo, null);
-            tv = (TextView) v.findViewById(R.id.tvMap);
 
-
-            imageView = (ImageView) v.findViewById(R.id.imageView);
-            imageView.setImageBitmap(photo);
-            tv.setText(value);
-
-            return v;
-        }
-
-
-        @Override
-        public View getInfoContents(Marker marker)
-        {
-            return null;
-        }
-
-    }
 
 
     @Override
@@ -338,6 +314,169 @@ public class DonateFragment extends Fragment {
         mMapView.onLowMemory();
     }
 
+    class MakeMarkAsync extends AsyncTask<String, Void, String> {
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                String context_body = (String)params[0];
+                String lat = (String) params[1];
+                String lng = (String) params[2];
+
+                String data = URLEncoder.encode("body", "UTF-8") + "=" + URLEncoder.encode(context_body, "UTF-8");
+                data += "&" + URLEncoder.encode("lat", "UTF-8") + "=" + URLEncoder.encode(lat, "UTF-8");
+                data += "&" + URLEncoder.encode("lng", "UTF-8") + "=" + URLEncoder.encode(lng, "UTF-8");
+
+                java.net.URL url = new URL(MAKEURL);
+
+                URLConnection conn = url.openConnection();
+
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+                return sb.toString();
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (result.equalsIgnoreCase("success")) {
+                Toast.makeText(getActivity(), "기부가 완료되었습니다.", Toast.LENGTH_LONG).show();
+            } else if (result.equalsIgnoreCase("failure")) {
+                Toast.makeText(getActivity(), "글 작성 오류.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    class GetMarkersThread extends Thread{
+        @Override
+        public void run(){
+            try {
+                java.net.URL url = new URL(GETURL);
+
+                URLConnection conn = url.openConnection();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+
+                String result =  sb.toString();
+                if (!result.equalsIgnoreCase("failure")) {
+                    try {
+                        JSONObject root = new JSONObject(result);
+
+                        JSONArray ja = root.getJSONArray("result");
+                        if(ja.length()!=0) {
+                            for(int i=0;i<ja.length();i++){
+                                markerList.add(ja.getJSONObject(i).getString("lat"));
+                                markerList.add(ja.getJSONObject(i).getString("lng"));
+                                markerList.add(ja.getJSONObject(i).getString("body"));
+                            }
+                        }
+                    }catch(JSONException e){
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    class GetMarkTextAsync extends AsyncTask<String, Void, String> {
+        ProgressDialog loading;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading = ProgressDialog.show(getActivity(), "잠시만요.", "로딩중...");
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                String lat = (String) params[0];
+                String lng = (String) params[1];
+
+                String data = URLEncoder.encode("lat", "UTF-8") + "=" + URLEncoder.encode(lat, "UTF-8");
+                data += "&" + URLEncoder.encode("lng", "UTF-8") + "=" + URLEncoder.encode(lng, "UTF-8");
+
+                java.net.URL url = new URL(GETTEXTURL);
+
+                URLConnection conn = url.openConnection();
+
+                conn.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+
+                wr.write(data);
+                wr.flush();
+
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+
+                // Read Server Response
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                    break;
+                }
+                return sb.toString();
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            loading.dismiss();
+
+            if (!result.equalsIgnoreCase("failure")) {
+                try {
+                    JSONObject root = new JSONObject(result);
+
+                    JSONArray ja = root.getJSONArray("result");
+                    if(ja.length()!=0) {
+//                        View v = getActivity().getLayoutInflater().inflate(R.layout.mapinfo, null);
+//                        tv = (TextView) v.findViewById(R.id.tvMap);
+//                        tv.setText(ja.getJSONObject(0).getString("body"));
+                        value = ja.getJSONObject(0).getString("body");
+                    }
+                }catch(JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
 
