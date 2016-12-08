@@ -71,7 +71,7 @@
         <activity
             android:name="sub.listpage.ContentPage"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name="sub.listpage.ChatRoom" />
+        <activity android:name="sub.listpage.ChattingActivity" />
         <activity
             android:name="utils.dbconnected.ChangeInfoActivity"
             android:label="사용자 정보 변경" />
