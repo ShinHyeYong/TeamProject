@@ -113,12 +113,6 @@ public class WritePage extends Activity {
 
     @Override
     public void onBackPressed() {
-//        finish();
-//        Intent Mainintent = new Intent(WritePage.this, MainActivity.class);
-//        Mainintent.putExtra("write","ex");
-//        startActivity(Mainintent);
-//        finish();
-//
         Intent mainIntent = new Intent(WritePage.this, MainActivity.class);
         if(fragmentType.equals("market"))
             mainIntent.putExtra("write","mk");

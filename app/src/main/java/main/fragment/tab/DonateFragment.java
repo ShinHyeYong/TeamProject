@@ -2,11 +2,10 @@ package main.fragment.tab;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
@@ -18,8 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -31,6 +29,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -44,12 +43,16 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 import psj.hahaha.R;
+import sub.listpage.ContentPage;
 import utils.Constants;
+import utils.model.UserInfo;
 
 
 public class DonateFragment extends Fragment {
@@ -58,10 +61,7 @@ public class DonateFragment extends Fragment {
     private GoogleMap googleMap;
     private GoogleApiClient mGoogleApiClient;
     public double lati=0,longi=0;
-    TextView tv;
-    ImageView imageView;
-    Bitmap photo;
-    String value;
+    String place,place_hint;
     String MAKEURL = "http://210.91.76.33:8080/marker/makemarker.php";
     String GETURL = "http://210.91.76.33:8080/marker/getmarkers.php";
     String GETTEXTURL = "http://210.91.76.33:8080/marker/getmarkertext.php";
@@ -116,17 +116,34 @@ public class DonateFragment extends Fragment {
                 Dialog dialog = new Dialog(getActivity());
                 final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-                builder.setTitle("힌트를 입력하세요");
-                final EditText input = new EditText(getActivity());
-                builder.setView(input);
+                final EditText where = new EditText(getActivity());
+                where.setHint("장소");
+                final EditText hint = new EditText(getActivity());
+                hint.setHint("힌트");
+
+                Context context = mMapView.getContext();
+                LinearLayout layout = new LinearLayout(context);
+                layout.setOrientation(LinearLayout.VERTICAL);
+                layout.addView(where);
+                layout.addView(hint);
+
+                builder.setTitle("장소 및 힌트를 입력하세요");
+
+                builder.setView(layout);
 
                 builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        value = input.getText().toString();
+
+                        place = where.getText().toString();
+                        place_hint = hint.getText().toString();
                         LatLng position = getPosition();
 
+                        Calendar c = Calendar.getInstance();
+                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                        String formattedDate = df.format(c.getTime());
+
                         MakeMarkAsync task =  new MakeMarkAsync();
-                        task.execute(value,String.valueOf(position.latitude),String.valueOf(position.longitude));
+                        task.execute(UserInfo.UserEntry.USER_NAME,formattedDate,place,place_hint,String.valueOf(position.latitude),String.valueOf(position.longitude));
 
                         dialog.dismiss();
                     }
@@ -137,56 +154,6 @@ public class DonateFragment extends Fragment {
 
                     }
                 });
-
-
-                builder.setItems(new CharSequence[] {"Camera" },
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                switch (which) {
-
-                                    case 0:
-
-
-                                        Intent cameraIntent = new Intent(
-                                                android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-
-                                        startActivityForResult(
-                                                cameraIntent,
-                                                ACTION_REQUEST_CAMERA);
-
-
-                                        final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-                                        final EditText input = new EditText(getActivity());
-                                        input.setSingleLine();
-
-                                        alert.setTitle("식권");
-                                        alert.setMessage("힌트 입력:");
-                                        alert.setView(input);
-                                        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int whichButton) {
-                                                value = input.getText().toString().trim();
-                                                getPosition();
-                                            }
-                                        });
-
-                                        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int whichButton) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                                        alert.show();
-
-                                        break;
-
-                                    default:
-                                        break;
-                                }
-                            }
-                        });
-
                 builder.show();
 
 
@@ -214,15 +181,27 @@ public class DonateFragment extends Fragment {
                 }
 
                 googleMap = mMap;
+                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        String no = marker.getTitle();
+                        Intent i = new Intent(getActivity(),ContentPage.class);
+                        i.putExtra("fragmentType","donate");
+                        i.putExtra("contentnum",no);
+                        startActivity(i);
+                        getActivity().finish();
+
+                        return true;
+                    }
+                });
+
+                for(int i=0;i<markerList.size()-2;i+=3){
+                    googleMap.addMarker(new MarkerOptions().title(markerList.get(i+2)).position(new LatLng(Double.parseDouble(markerList.get(i)),Double.parseDouble(markerList.get(i+1)))));
+                }
 
                 // For showing a move to my location button
                 googleMap.setMyLocationEnabled(true);
                 googleMap.getUiSettings().setMapToolbarEnabled(false);
-
-                for(int i=0;i<markerList.size()-2;i+=3){
-                    googleMap.addMarker(new MarkerOptions().title(markerList.get(i+2)).position(new LatLng(Double.parseDouble(markerList.get(i)),Double.parseDouble(markerList.get(i+1)))));
-
-                }
 
                 // Get LocationManager object from System Service LOCATION_SERVICE
                 Geocoder geo = new Geocoder(getActivity(), Locale.KOREAN);
@@ -237,11 +216,8 @@ public class DonateFragment extends Fragment {
                 // For zooming automatically to the location of the marker
                 CameraPosition cameraPosition = new CameraPosition.Builder().target(MyongJi).zoom(16).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
             }
-
         });
-
         return view;
     }
 
@@ -261,7 +237,7 @@ public class DonateFragment extends Fragment {
         longi = mLastLocation.getLongitude();
 
         LatLng myPosi = new LatLng(lati, longi);
-        googleMap.addMarker(new MarkerOptions().position(myPosi));
+        googleMap.addMarker(new MarkerOptions().title(String.valueOf(markerList.size()/3)).position(myPosi));
 
         // For zooming automatically to the location of the marker
         CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosi).zoom(16).build();
@@ -269,23 +245,6 @@ public class DonateFragment extends Fragment {
 
         return myPosi;
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == getActivity().RESULT_OK) {
-            if (requestCode == DonateFragment.ACTION_REQUEST_CAMERA) {
-                photo = (Bitmap) data.getExtras()
-                        .get("data");
-
-            }
-        }
-    }
-
-
-
-
 
 
     @Override
@@ -324,11 +283,17 @@ public class DonateFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             try {
-                String context_body = (String)params[0];
-                String lat = (String) params[1];
-                String lng = (String) params[2];
+                String user = (String)params[0];
+                String time = (String)params[1];
+                String place = (String)params[2];
+                String hint = (String)params[3];
+                String lat = (String) params[4];
+                String lng = (String) params[5];
 
-                String data = URLEncoder.encode("body", "UTF-8") + "=" + URLEncoder.encode(context_body, "UTF-8");
+                String data = URLEncoder.encode("user", "UTF-8") + "=" + URLEncoder.encode(user, "UTF-8");
+                data += "&" + URLEncoder.encode("time", "UTF-8") + "=" + URLEncoder.encode(time, "UTF-8");
+                data += "&" + URLEncoder.encode("place", "UTF-8") + "=" + URLEncoder.encode(place, "UTF-8");
+                data += "&" + URLEncoder.encode("hint", "UTF-8") + "=" + URLEncoder.encode(hint, "UTF-8");
                 data += "&" + URLEncoder.encode("lat", "UTF-8") + "=" + URLEncoder.encode(lat, "UTF-8");
                 data += "&" + URLEncoder.encode("lng", "UTF-8") + "=" + URLEncoder.encode(lng, "UTF-8");
 
@@ -398,7 +363,7 @@ public class DonateFragment extends Fragment {
                             for(int i=0;i<ja.length();i++){
                                 markerList.add(ja.getJSONObject(i).getString("lat"));
                                 markerList.add(ja.getJSONObject(i).getString("lng"));
-                                markerList.add(ja.getJSONObject(i).getString("body"));
+                                markerList.add(ja.getJSONObject(i).getString("no"));
                             }
                         }
                     }catch(JSONException e){
@@ -407,74 +372,6 @@ public class DonateFragment extends Fragment {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-        }
-    }
-
-
-    class GetMarkTextAsync extends AsyncTask<String, Void, String> {
-        ProgressDialog loading;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            loading = ProgressDialog.show(getActivity(), "잠시만요.", "로딩중...");
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                String lat = (String) params[0];
-                String lng = (String) params[1];
-
-                String data = URLEncoder.encode("lat", "UTF-8") + "=" + URLEncoder.encode(lat, "UTF-8");
-                data += "&" + URLEncoder.encode("lng", "UTF-8") + "=" + URLEncoder.encode(lng, "UTF-8");
-
-                java.net.URL url = new URL(GETTEXTURL);
-
-                URLConnection conn = url.openConnection();
-
-                conn.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-
-                wr.write(data);
-                wr.flush();
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-
-                // Read Server Response
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                    break;
-                }
-                return sb.toString();
-            } catch (Exception e) {
-                return new String("Exception: " + e.getMessage());
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            loading.dismiss();
-
-            if (!result.equalsIgnoreCase("failure")) {
-                try {
-                    JSONObject root = new JSONObject(result);
-
-                    JSONArray ja = root.getJSONArray("result");
-                    if(ja.length()!=0) {
-//                        View v = getActivity().getLayoutInflater().inflate(R.layout.mapinfo, null);
-//                        tv = (TextView) v.findViewById(R.id.tvMap);
-//                        tv.setText(ja.getJSONObject(0).getString("body"));
-                        value = ja.getJSONObject(0).getString("body");
-                    }
-                }catch(JSONException e){
-                    e.printStackTrace();
-                }
             }
         }
     }

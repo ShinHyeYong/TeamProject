@@ -94,6 +94,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             viewPager.setCurrentItem(1);
         }else if(getIntent().getStringExtra("write")!=null && getIntent().getStringExtra("write").equals("mk")){
             viewPager.setCurrentItem(2);
+        }else if(getIntent().getStringExtra("write")!=null && getIntent().getStringExtra("write").equals("dn")){
+            viewPager.setCurrentItem(3);
         }
 
     }

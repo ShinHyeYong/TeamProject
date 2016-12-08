@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,8 +55,10 @@ public class ContentPage extends Activity {
         number = intent.getStringExtra("contentnum");
         if(fragmentType.equals("market"))
             URL = "http://210.91.76.33:8080/context/getmarketcontext.php";
-        else
+        else if(fragmentType.equals("exchange"))
             URL = "http://210.91.76.33:8080/context/getexchangecontext.php";
+        else
+            URL = "http://210.91.76.33:8080/marker/getmarkercontext.php";
 
         listView = (ListView) findViewById(R.id.commentList);
 
@@ -96,8 +97,10 @@ public class ContentPage extends Activity {
         Intent Mainintent = new Intent(ContentPage.this, MainActivity.class);
         if(fragmentType.equals("market"))
             Mainintent.putExtra("write","mk");
-        else
+        else if(fragmentType.equals("exchange"))
             Mainintent.putExtra("write","ex");
+        else
+        Mainintent.putExtra("write","dn");
         startActivity(Mainintent);
         finish();
     }
@@ -171,25 +174,11 @@ public class ContentPage extends Activity {
                         TextView mainTv = (TextView) findViewById(R.id.mainTV);
                         TextView timeTv = (TextView) findViewById(R.id.timeTV);
                         TextView writerTv = (TextView) findViewById(R.id.writerTV);
-                        ImageView cImage = (ImageView) findViewById(R.id.imageContent);
 
                         titleTv.setText(context[0]);
                         mainTv.setText(context[1]);
                         timeTv.setText("작성 날짜 : "+context[2]);
                         writerTv.setText("작성자 : "+context[3]);
-
-//                        Bitmap imgbitmap;
-//                        if(!context[5].equals("noImg")) {
-//                            try {
-//                                byte[] encodeByte = Base64.decode(context[5], Base64.DEFAULT);
-//                                imgbitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-//                                cImage.setImageBitmap(imgbitmap);
-//                            } catch (Exception e) {
-//                                e.getMessage();
-//                            }
-//                        }else{
-//                            cImage.setVisibility(GONE);
-//                        }
                     }
                 }catch(JSONException e){
                     e.printStackTrace();
