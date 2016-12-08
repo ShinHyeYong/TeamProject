@@ -81,7 +81,6 @@ public class WritePage extends Activity {
 
 
     public void goContent(View v){
-
         // 제목 본문 이미지 등록 시간 사용자id 서버로 전송
         Intent contentIntent = new Intent(WritePage.this, ContentPage.class);
         //제목
@@ -97,17 +96,16 @@ public class WritePage extends Activity {
                 byte[] b = baos.toByteArray();
                 imgString = Base64.encodeToString(b, Base64.DEFAULT);
             }
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String formattedDate = df.format(c.getTime());
+
+            WriteContextAsync task = new WriteContextAsync();
+            task.execute(eTitle.getText().toString(), eMain.getText().toString(), formattedDate, UserInfo.UserEntry.USER_ID,imgString);
 
         }else{
             Toast.makeText(this,"제목 또는 본문 내용을 입력하십시오.",Toast.LENGTH_SHORT).show();
         }
-
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String formattedDate = df.format(c.getTime());
-
-        WriteContextAsync task = new WriteContextAsync();
-        task.execute(eTitle.getText().toString(), eMain.getText().toString(), formattedDate, UserInfo.UserEntry.USER_ID);
     }
 
 
@@ -138,27 +136,27 @@ public class WritePage extends Activity {
 
     private void selectImage() {
 
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        final CharSequence[] options = { "사진 촬영", "앨범","취소" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(WritePage.this);
-        builder.setTitle("Add Photo!");
+        builder.setTitle("사진 첨부");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo"))
+                if (options[item].equals("사진 촬영"))
                 {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
                 }
-                else if (options[item].equals("Choose from Gallery"))
+                else if (options[item].equals("앨범"))
                 {
                     Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
 
                 }
-                else if (options[item].equals("Cancel")) {
+                else if (options[item].equals("취소")) {
                     dialog.dismiss();
                 }
             }
@@ -182,9 +180,15 @@ public class WritePage extends Activity {
                 try {
 
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-
+                    bitmapOptions.inSampleSize = 4;
                     bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
                             bitmapOptions);
+                    bitmap = Bitmap.createScaledBitmap(bitmap, 1680, 1680, true);
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] b = baos.toByteArray();
+                    imgString = Base64.encodeToString(b, Base64.DEFAULT);
 
                     eImage.setImageBitmap(bitmap);
 
@@ -221,6 +225,11 @@ public class WritePage extends Activity {
                 c.close();
                 bitmap = (BitmapFactory.decodeFile(picturePath));
 
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] b = baos.toByteArray();
+                imgString = Base64.encodeToString(b, Base64.DEFAULT);
+
                 eImage.setImageBitmap(bitmap);
             }
         }
@@ -242,11 +251,13 @@ public class WritePage extends Activity {
                 String context_body = (String) params[1];
                 String context_time = (String) params[2];
                 String context_usrid = (String) params[3];
+                String context_img = (String) params[4];
 
                 String data = URLEncoder.encode("title", "UTF-8") + "=" + URLEncoder.encode(context_title, "UTF-8");
                 data += "&" + URLEncoder.encode("body", "UTF-8") + "=" + URLEncoder.encode(context_body, "UTF-8");
                 data += "&" + URLEncoder.encode("time", "UTF-8") + "=" + URLEncoder.encode(context_time, "UTF-8");
                 data += "&" + URLEncoder.encode("userid", "UTF-8") + "=" + URLEncoder.encode(context_usrid, "UTF-8");
+                data += "&" + URLEncoder.encode("img", "UTF-8") + "=" + URLEncoder.encode(context_img, "UTF-8");
 
                 java.net.URL url = new URL(URL);
 

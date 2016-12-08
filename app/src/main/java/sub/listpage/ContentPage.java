@@ -7,9 +7,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +34,8 @@ import utils.Element;
 import utils.adapter.ListViewAdapter;
 import utils.model.UserInfo;
 
+import static android.view.View.GONE;
+
 /**
  * Created by user on 2016-11-11.
  */
@@ -42,6 +47,8 @@ public class ContentPage extends Activity {
     String WCURL = "http://210.91.76.33:8080/comment/writecomment.php";
     String CLISTURL = "http://210.91.76.33:8080/comment/getcommentlist.php";
 
+    ImageView image;
+
     GetCommentListAsync clistTask = null;
     ArrayList<Element> elements;
     private ListView listView;
@@ -51,14 +58,17 @@ public class ContentPage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content);
         Intent intent = getIntent();
+        image = (ImageView) findViewById(R.id.imageContent);
         fragmentType = intent.getStringExtra("fragmentType");
         number = intent.getStringExtra("contentnum");
         if(fragmentType.equals("market"))
             URL = "http://210.91.76.33:8080/context/getmarketcontext.php";
         else if(fragmentType.equals("exchange"))
             URL = "http://210.91.76.33:8080/context/getexchangecontext.php";
-        else
+        else {
             URL = "http://210.91.76.33:8080/marker/getmarkercontext.php";
+            image.setVisibility(GONE);
+        }
 
         listView = (ListView) findViewById(R.id.commentList);
 
@@ -117,7 +127,7 @@ public class ContentPage extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = ProgressDialog.show(ContentPage.this, "\t잠시 기다려 주세요.", "로딩중...");
+            loading = ProgressDialog.show(ContentPage.this, "잠시만요.", "로딩중...");
         }
 
         @Override
@@ -168,7 +178,8 @@ public class ContentPage extends Activity {
                                 ja.getJSONObject(0).getString("body"),
                                 ja.getJSONObject(0).getString("time"),
                                 ja.getJSONObject(0).getString("userid"),
-                                ja.getJSONObject(0).getString("content_no")
+                                ja.getJSONObject(0).getString("content_no"),
+                                ja.getJSONObject(0).getString("img")
                         };
                         TextView titleTv = (TextView) findViewById(R.id.titleTV);
                         TextView mainTv = (TextView) findViewById(R.id.mainTV);
@@ -176,9 +187,12 @@ public class ContentPage extends Activity {
                         TextView writerTv = (TextView) findViewById(R.id.writerTV);
 
                         titleTv.setText(context[0]);
-                        mainTv.setText(context[1]);
-                        timeTv.setText(context[2]);
+                        mainTv.setText(context[1].replace("이것은줄바꿈이다!!!","\n"));
+                        timeTv.setText("작성 날짜 : "+context[2]);
                         writerTv.setText("작성자 : "+context[3]);
+                        if(!context[5].equals("noImg")){
+                            Glide.with(ContentPage.this).load(context[5]).into(image);
+                        }
                     }
                 }catch(JSONException e){
                     e.printStackTrace();
@@ -193,7 +207,7 @@ public class ContentPage extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = ProgressDialog.show(ContentPage.this, "업로드 중입니다.", "로딩중...");
+            loading = ProgressDialog.show(ContentPage.this, "잠시만요.", "로딩중...");
         }
 
         @Override
@@ -257,7 +271,7 @@ public class ContentPage extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = ProgressDialog.show(ContentPage.this, "업로드 중입니다.", "로딩중...");
+            loading = ProgressDialog.show(ContentPage.this, "잠시만요.", "로딩중...");
         }
 
         @Override
@@ -307,7 +321,7 @@ public class ContentPage extends Activity {
                     JSONArray ja = root.getJSONArray("result");
                     if(ja.length()!=0) {
                         for(int i=ja.length()-1;i>=0;i--){
-                            elements.add(new Element(" "+ja.getJSONObject(i).getString("writer")+" \n\n"+ ja.getJSONObject(i).getString("body"), ja.getJSONObject(i).getString("time")));
+                            elements.add(new Element("- "+ja.getJSONObject(i).getString("writer")+" -\n\n"+ ja.getJSONObject(i).getString("body"), ja.getJSONObject(i).getString("time")));
                         }
                     }
                     setListView();
