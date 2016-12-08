@@ -2,147 +2,118 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    >
     <RelativeLayout
-        android:id="@+id/relativeLayout14"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/titleTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="30dp"
-            android:text="Title"
-            android:textSize="20dp" />
-
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout15"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/relativeLayout14"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/writerTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="20dp" />
-
-        <TextView
-            android:id="@+id/timeTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/writerTV"
-            android:layout_marginStart="250dp" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout16"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="20dp"
-            android:background="#9adfff"
-            android:onClick="submitComment"
-            android:text="입력" />
-
-        <EditText
-            android:id="@+id/commentary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/button9"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="11dp"
-            android:hint="댓글을 입력해 주세요."
-            android:paddingStart="11dp" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout13"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
-        android:layout_above="@+id/relativeLayout21"
-        android:layout_below="@+id/relativeLayout15">
-
+        android:id="@+id/relativeLayout14">
         <TextView
-            android:id="@+id/mainTV"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:layout_weight="0.11"
-            android:background="#ffffff"
-            android:paddingStart="11dp"
-            android:paddingTop="5dp"
-            android:text="Main" />
-
-        <ImageView
-            android:layout_height="150dp"
-            android:layout_width="150dp"
-                   android:id="@+id/imageWrite"
-                  android:onClick="attachImage"
-            android:background="#000000"
-            android:layout_alignTop="@+id/mainTV"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="16dp" />
+        android:text="Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/titleTV"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="20dp" />
+        
     </RelativeLayout>
-
+    
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/relativeLayout14"
+        android:layout_alignParentStart="true"
+        android:id="@+id/relativeLayout15">
+        
+        <TextView
+        android:layout_marginStart="11dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/timeTV"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="201dp" />
+        
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/writerTV"
+        android:layout_marginStart="199dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/timeTV" />
+        
+    </RelativeLayout>
+    
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/commentList"
+        android:layout_below="@+id/relativeLayout16"
+        android:layout_alignParentStart="true">
+    </ListView>
+    
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/relativeLayout16"
-        android:id="@+id/relativeLayout21">
-
+        android:orientation="horizontal"
+        android:id="@+id/relativeLayout13"
+        android:layout_below="@+id/relativeLayout15"
+        android:layout_alignParentStart="true">
+        
         <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="10dp"
-            android:text="댓글()"
-            android:textSize="20dp"
-            android:layout_above="@+id/commentList"
-            android:layout_alignParentStart="true" />
-        <ListView
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:id="@+id/commentList"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true" />
-
-
+        android:text="Main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/mainTV"
+        android:layout_weight="0.11"
+        android:layout_below="@+id/imageContent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="27dp" />
+        
+        <ImageView
+        android:background="#ffffff"
+        android:layout_width="180dp"
+        android:layout_height="130dp"
+        android:id="@+id/imageContent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+        
     </RelativeLayout>
-
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="21dp"
+        android:id="@+id/relativeLayout16"
+        android:layout_below="@+id/relativeLayout13"
+        android:layout_alignParentStart="true">
+        <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:onClick="submitComment"
+        android:layout_marginEnd="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/button9" />
+        
+        <EditText
+        android:paddingStart="11dp"
+        android:hint="commentary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/commentary"
+        android:layout_alignBottom="@+id/button9"
+        android:layout_alignParentStart="true" />
+        
+    </RelativeLayout>
 </RelativeLayout>
