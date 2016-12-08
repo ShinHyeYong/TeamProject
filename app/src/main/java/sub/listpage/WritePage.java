@@ -99,9 +99,10 @@ public class WritePage extends Activity {
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String formattedDate = df.format(c.getTime());
+            String body = eMain.getText().toString().replace("\n","이것은줄바꿈이다!!!");
 
             WriteContextAsync task = new WriteContextAsync();
-            task.execute(eTitle.getText().toString(), eMain.getText().toString(), formattedDate, UserInfo.UserEntry.USER_ID,imgString);
+            task.execute(eTitle.getText().toString(), body, formattedDate, UserInfo.UserEntry.USER_ID,imgString);
 
         }else{
             Toast.makeText(this,"제목 또는 본문 내용을 입력하십시오.",Toast.LENGTH_SHORT).show();

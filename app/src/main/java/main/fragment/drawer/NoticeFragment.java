@@ -5,18 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import psj.hahaha.R;
-import utils.Element;
-import utils.adapter.ListViewAdapter;
 
 public class NoticeFragment extends Fragment{
 
@@ -37,13 +30,14 @@ public class NoticeFragment extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        groups = new String[]{};
+        children = new String[][]{};
         groups = new String[] { "보물 찾기 기능이 추가되었습니다!", "옹이농장이 개장되었습니다!" };
 
         children = new String [][] {
                 { "이 학교의 모든 식권을 이곳에 숨겨놓았다..!\n보물찾기 기능이 추가되었습니다. 보물을 숨기고 보물을 찾는 해적왕이 되어보세욧!"},
                 { "옹이 농장에 오신 모든 여러분을 환영합니다!"},
-                };
+        };
     }
 
     @Override

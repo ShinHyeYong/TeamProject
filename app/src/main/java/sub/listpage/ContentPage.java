@@ -167,6 +167,7 @@ public class ContentPage extends Activity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             loading.dismiss();
+            System.out.println(result);
             if (!result.equalsIgnoreCase("failure")) {
                 try {
                     JSONObject root = new JSONObject(result);
@@ -179,19 +180,24 @@ public class ContentPage extends Activity {
                                 ja.getJSONObject(0).getString("time"),
                                 ja.getJSONObject(0).getString("userid"),
                                 ja.getJSONObject(0).getString("content_no"),
-                                ja.getJSONObject(0).getString("img")
+                                ja.getJSONObject(0).getString("img"),
+                                ja.getJSONObject(0).getString("cnum")
                         };
                         TextView titleTv = (TextView) findViewById(R.id.titleTV);
                         TextView mainTv = (TextView) findViewById(R.id.mainTV);
                         TextView timeTv = (TextView) findViewById(R.id.timeTV);
                         TextView writerTv = (TextView) findViewById(R.id.writerTV);
+                        TextView cnumTv = (TextView) findViewById(R.id.textView5);
 
                         titleTv.setText(context[0]);
                         mainTv.setText(context[1].replace("이것은줄바꿈이다!!!","\n"));
                         timeTv.setText("작성 날짜 : "+context[2]);
                         writerTv.setText("작성자 : "+context[3]);
+                        cnumTv.setText("댓글("+context[6]+")");
                         if(!context[5].equals("noImg")){
                             Glide.with(ContentPage.this).load(context[5]).into(image);
+                        }else{
+                            image.setVisibility(GONE);
                         }
                     }
                 }catch(JSONException e){

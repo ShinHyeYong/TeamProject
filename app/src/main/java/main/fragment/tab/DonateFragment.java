@@ -64,7 +64,6 @@ public class DonateFragment extends Fragment {
     String place,place_hint;
     String MAKEURL = "http://210.91.76.33:8080/marker/makemarker.php";
     String GETURL = "http://210.91.76.33:8080/marker/getmarkers.php";
-    String GETTEXTURL = "http://210.91.76.33:8080/marker/getmarkertext.php";
     ArrayList<String> markerList;
 
     static final int ACTION_REQUEST_CAMERA = 1;

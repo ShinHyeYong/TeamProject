@@ -6,14 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,6 +30,7 @@ import java.util.Set;
 import psj.hahaha.R;
 import sub.listpage.ChattingActivity;
 import utils.Element;
+import utils.adapter.ChatListAdapter;
 import utils.dbconnected.LogInActivity;
 import utils.model.UserInfo;
 
@@ -38,7 +38,7 @@ public class GatherFragment extends Fragment implements View.OnClickListener {
 
     private ListView listView;
     ArrayList<Element> elements;
-    private ArrayAdapter<String> arrayAdapter;
+    private ChatListAdapter arrayAdapter;
     private ArrayList<String> list_of_rooms = new ArrayList<>();
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot(); //FCM DataBase root를 불러옴.
     private String timeStamp;
@@ -69,19 +69,26 @@ public class GatherFragment extends Fragment implements View.OnClickListener {
         listView = (ListView) view.findViewById(R.id.glistView);
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.gfab);
         fab.setOnClickListener(this);
+        callRoot();
 //        arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,list_of_rooms);
-        arrayAdapter = new ArrayAdapter<String>(getActivity(),R.layout.my_text_view,list_of_rooms);
+
+        return view;
+    }
+
+    private void setListener(){
+        Log.i("Test", list_of_rooms.size() + "");
+        arrayAdapter = new ChatListAdapter(getActivity(), list_of_rooms);
 
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(UserInfo.UserEntry.IS_LOGIN == true) {
+                if (UserInfo.UserEntry.IS_LOGIN) {
                     Intent intent = new Intent(getActivity(), ChattingActivity.class);
-                    intent.putExtra("room_name", ((TextView) view).getText().toString());
+                    intent.putExtra("room_name", list_of_rooms.get(i));
                     intent.putExtra("user_name", UserInfo.UserEntry.USER_NAME);
                     startActivity(intent);
-                }else{
+                } else {
                     Intent intent = new Intent(getActivity(), LogInActivity.class);
                     startActivity(intent);
                     getActivity().finish();
@@ -89,20 +96,22 @@ public class GatherFragment extends Fragment implements View.OnClickListener {
 
             }
         });
+    }
 
-
+    private void callRoot(){
         //FCM value Listener
         root.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                list_of_rooms.clear();  // clear current room
                 Set<String> set = new HashSet<String>();        //Temp값 만듬.
                 Iterator i = dataSnapshot.getChildren().iterator();
-                while (i.hasNext()){
-                    set.add(((DataSnapshot)i.next()).getKey());
+                while (i.hasNext()) {
+                    set.add(((DataSnapshot) i.next()).getKey());
                 }
-                list_of_rooms.clear();  // clear current room
+
                 list_of_rooms.addAll(set);  //add temp list
+                setListener();
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -111,14 +120,12 @@ public class GatherFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-
-        return view;
     }
 
 
     @Override
     public void onClick(View view) {
-        if(UserInfo.UserEntry.IS_LOGIN == true) {
+        if (UserInfo.UserEntry.IS_LOGIN) {
 
             Dialog dialog = new Dialog(getActivity());
             final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
@@ -130,8 +137,8 @@ public class GatherFragment extends Fragment implements View.OnClickListener {
             builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
-                    Map<String,Object> map = new HashMap<String, Object>();
-                    map.put(" " + input.getText().toString(),"");
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put(input.getText().toString(), "");
                     root.updateChildren(map);
                     dialog.dismiss();
                 }
@@ -145,7 +152,7 @@ public class GatherFragment extends Fragment implements View.OnClickListener {
             builder.show();
 
 
-        }else{
+        } else {
             Intent intent = new Intent(getActivity(), LogInActivity.class);
             startActivity(intent);
             getActivity().finish();
