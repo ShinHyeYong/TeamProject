@@ -1,23 +1,12 @@
 package sub.listpage;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ListViewCompat;
-import android.text.Spanned;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,76 +19,17 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Random;
 
 import psj.hahaha.R;
 import utils.adapter.ChatLogAdapter;
-import utils.model.ChatInfo;
 
 /**
  * Created by user on 2016-12-06.
  */
-/*
-
-public class ChattingActivity extends BaseAdapter {
-    private Context mContext;
-    private ArrayList<Chatting> arrayList;
-
-    public ChattingActivity(Context context, ArrayList<Chatting> arrayList) {
-        this.mContext = context;
-        this.arrayList = arrayList;
-    }
-
-    @Override
-    public int getCount() {
-        return arrayList.size();
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return arrayList.get(position);
-    }
-
-    @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
-        Chatting chatting = arrayList.get(position);
-
-        holder = new ViewHolder();
-
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        convertView = inflater.inflate(chatting.getRes(), parent, false);
-
-        convertView.setTag(holder);
-
-        holder.id = (TextView) convertView.findViewById(R.id.userID);
-        holder.comment = (TextView) convertView.findViewById(R.id.comment);
-
-        holder.id.setText(chatting.getId());
-        holder.comment.setText(chatting.getComment());
-
-        return convertView;
-    }
-    public class ViewHolder{
-        public TextView id;
-        public TextView comment;
-    }
-
-}
-*/
-
 public class ChattingActivity extends AppCompatActivity {
 
     private Button btn_send_msg;
     private EditText input_msg;
-    private TextView append_chat_id, append_chat_msg, append_chat_time;
-    private String chat_msg, chat_user_name, chat_time_stamp;
 
     private String user_name, room_name;
     private DatabaseReference root;
@@ -118,10 +48,6 @@ public class ChattingActivity extends AppCompatActivity {
         input_msg = (EditText) findViewById(R.id.msg_input);
 
         listView = (ListView) findViewById(R.id.chatting);
-
-        /*append_chat_id = (TextView) findViewById(R.id.chat_id);
-        append_chat_msg = (TextView) findViewById(R.id.chat_msg);
-        append_chat_time = (TextView) findViewById(R.id.chat_time);*/
 
         user_name = getIntent().getExtras().get("user_name").toString();
         room_name = getIntent().getExtras().get("room_name").toString();
@@ -198,9 +124,8 @@ public class ChattingActivity extends AppCompatActivity {
         Chatting info = new Chatting(null, null, null, R.layout.chat_leftrow);
         int x = 0;
         while (i.hasNext()) {
-//            chat_user_name = (String) ((DataSnapshot) i.next()).getValue();
             String serverToText = (String) ((DataSnapshot) i.next()).getValue();
-            Log.i("Test0", "" + x + " " + serverToText);
+            Log.i("Message", "" + x + " " + serverToText);
             switch (x) {
                 case 0:
                     info.setComment(serverToText);
@@ -216,7 +141,6 @@ public class ChattingActivity extends AppCompatActivity {
                     break;
             }
             x++;
-//            append_chat_id.append(chat_user_name + "\n\n");
         }
         arrayList.add(info);
         Log.i("Test", arrayList.toString());

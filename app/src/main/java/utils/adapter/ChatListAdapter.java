@@ -54,7 +54,7 @@ public class ChatListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.list_gather_item, parent, false);
 
             holder.name_text = (TextView) convertView.findViewById(R.id.name);
-            holder.chat_text = (TextView) convertView.findViewById(R.id.chat);
+          //  holder.chat_text = (TextView) convertView.findViewById(R.id.chat);
 
             convertView.setTag(holder);
 
@@ -62,9 +62,10 @@ public class ChatListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Log.i("Test", arrayList.get(pos));
+        Log.i("Title", arrayList.get(pos));
+        Log.i("Message", arrayList.get(pos));
         holder.name_text.setText(arrayList.get(pos));
-        holder.chat_text.setText("ㄴㅁㅇㄹㄴㅁㅇㄹㄴㅁㅇㄹ");
+//        holder.chat_text.setText("ㄴㅁㅇㄹㄴㅁㅇㄹㄴㅁㅇㄹ");
 
         return convertView;
     }
