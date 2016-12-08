@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="70dp"
+        android:orientation="vertical"
+        android:id="@+id/relativeLayout23">
 
         <TextView
             android:id="@+id/textView15"
@@ -20,54 +21,57 @@
             android:text="채팅방에 접속하셨습니다. \n채팅할 땐 서로 예의를 지켜주세요.\n"
             android:textColor="#000000" />
 
-        <LinearLayout
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="#ffffff"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:id="@+id/relativeLayout22">
+
+        <EditText
+            android:id="@+id/msg_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/btn_send"
+            android:layout_marginStart="20dp"
+            android:ems="10"
+            android:hint="메시지 입력"
+            android:inputType="textShortMessage" />
+
+        <Button
+            android:id="@+id/btn_send"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="17dp"
+            android:backgroundTint="#9adfff"
+            android:text="입력"
+            android:textColor="@color/colorAccent" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#B4CDE5"
+        android:layout_above="@+id/relativeLayout22"
+        android:layout_below="@+id/relativeLayout23"
+        android:layout_alignParentStart="true">
+
+        <ListView
+            android:id="@+id/chatting"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#B4CDE5"
-            android:orientation="vertical"
-            android:weightSum="10">
-
-            <ListView
-                android:id="@+id/chatting"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="8"
-                android:childDivider="@null"
-                android:divider="@null"
-                android:groupIndicator="@null"
-                android:transcriptMode="alwaysScroll" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:orientation="horizontal"
-                android:weightSum="10">
-
-                <EditText
-                    android:id="@+id/msg_input"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignTop="@+id/btn_send"
-                    android:layout_marginStart="20dp"
-                    android:layout_weight="8"
-                    android:ems="10"
-                    android:hint="메시지 입력"
-                    android:inputType="textShortMessage" />
-
-                <Button
-                    android:id="@+id/btn_send"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="17dp"
-                    android:layout_weight="2"
-                    android:backgroundTint="#9adfff"
-                    android:text="입력"
-                    android:textColor="@color/colorAccent" />
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+            android:layout_weight="8"
+            android:childDivider="@null"
+            android:divider="@null"
+            android:groupIndicator="@null"
+            android:transcriptMode="alwaysScroll" />
+    </RelativeLayout>
 </RelativeLayout>
