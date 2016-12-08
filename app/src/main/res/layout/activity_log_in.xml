@@ -9,7 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:orientation="horizontal"
         android:id="@+id/relativeLayout8"
         android:layout_alignParentTop="true"
@@ -38,7 +38,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:orientation="horizontal"
         android:id="@+id/relativeLayout7"
         android:layout_below="@+id/relativeLayout8"
