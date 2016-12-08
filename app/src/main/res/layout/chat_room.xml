@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/chat"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Button
@@ -13,7 +12,7 @@
         android:layout_alignParentEnd="true"
         android:textColor="@color/colorAccent"
         android:layout_marginEnd="17dp"
-        app:backgroundTint="#9adfff"
+        android:backgroundTint="#9adfff"
         android:id="@+id/btn_send" />
 
     <EditText
@@ -43,16 +42,19 @@
             android:orientation="vertical" >
 
             <TextView
-                android:text="☆★채팅방에 들어왔습니다☆★ \n채팅할 땐 서로 예의를 지켜주세요\n"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="5dp"
+                android:text="채팅방에 접속하셨습니다. \n채팅할 땐 서로 예의를 지켜주세요\n"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorAccent"
+                android:textColor="#000000"
                 android:id="@+id/textView15" />
 
             <TextView
+                android:layout_marginStart="11dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorAccent"
+                android:textColor="#000000"
                 android:textSize="15dp"
                 android:id="@+id/chat_text" />
         </LinearLayout>
