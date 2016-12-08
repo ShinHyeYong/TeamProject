@@ -53,7 +53,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         nameet = (EditText) findViewById(R.id.change_name);
         nameet.setText(UserInfo.UserEntry.USER_NAME);
         pwdet = (EditText) findViewById(R.id.change_password);
-        img = (ImageView) findViewById(R.id.changeUserImage);
+       // img = (ImageView) findViewById(R.id.changeUserImage);
     }
 
     public void changeInfo(View view){
@@ -64,7 +64,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(ChangeInfoActivity.this, "잠시만요.", "로딩중...");
+                loading = ProgressDialog.show(ChangeInfoActivity.this, "잠시만 기다려주세요.", "로딩중...");
             }
 
             @Override
