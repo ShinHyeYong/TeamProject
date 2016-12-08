@@ -61,14 +61,20 @@
         <activity
             android:name="main.SubActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="utils.dbconnected.LogInActivity" />
-        <activity android:name="utils.dbconnected.SignInActivity" />
+        <activity
+            android:name="utils.dbconnected.LogInActivity"
+            android:label="로그인" />
+        <activity
+            android:name="utils.dbconnected.SignInActivity"
+            android:label="회원가입" />
         <activity android:name="sub.listpage.WritePage" />
         <activity
             android:name="sub.listpage.ContentPage"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name="sub.listpage.ChatRoom" />
-        <activity android:name="utils.dbconnected.ChangeInfoActivity" />
+        <activity
+            android:name="utils.dbconnected.ChangeInfoActivity"
+            android:label="사용자 정보 변경" />
 
     </application>
 
