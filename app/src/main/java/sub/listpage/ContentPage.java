@@ -59,6 +59,9 @@ public class ContentPage extends Activity {
         setContentView(R.layout.content);
         Intent intent = getIntent();
         image = (ImageView) findViewById(R.id.imageContent);
+
+        //어떤 프래그먼트의 글인지 구분
+        //프래그먼트에 따라 URL도 다름
         fragmentType = intent.getStringExtra("fragmentType");
         number = intent.getStringExtra("contentnum");
         if(fragmentType.equals("market"))
@@ -67,9 +70,10 @@ public class ContentPage extends Activity {
             URL = "http://210.91.76.33:8080/context/getexchangecontext.php";
         else {
             URL = "http://210.91.76.33:8080/marker/getmarkercontext.php";
-            image.setVisibility(GONE);
+            image.setVisibility(GONE); //마커 생성할때는 이미지 첨부 없음
         }
 
+        //댓글 리스트
         listView = (ListView) findViewById(R.id.commentList);
 
         clistTask = new GetCommentListAsync();
@@ -83,10 +87,8 @@ public class ContentPage extends Activity {
         super.onStart();
     }
 
-    //댓글
+    //댓글 작성 함수
     public void submitComment(View v) {
-        //프래그먼트 타입, 글번호, 사용자이름, 내용 시간
-
         String body = ((EditText) findViewById(R.id.commentary)).getText().toString();
 
         Calendar c = Calendar.getInstance();
@@ -94,6 +96,7 @@ public class ContentPage extends Activity {
         String formattedDate = df.format(c.getTime());
 
         WriteCommentAsync task = new WriteCommentAsync();
+        //프래그먼트 타입, 글번호, 사용자이름, 내용, 시간을 서버에 전송
         task.execute(fragmentType, number, UserInfo.UserEntry.USER_NAME, body, formattedDate);
         Intent i = new Intent(this,ContentPage.class);
         i.putExtra("fragmentType",fragmentType);
@@ -102,6 +105,7 @@ public class ContentPage extends Activity {
         finish();
     }
 
+    //휴대폰의 back버튼을 탭 했을 경우 앱이 종료되지 않고 메인 액티비티로 이동
     @Override
     public void onBackPressed() {
         Intent Mainintent = new Intent(ContentPage.this, MainActivity.class);
@@ -115,12 +119,13 @@ public class ContentPage extends Activity {
         finish();
     }
 
+    // 댓글 리스트에 어댑터 세팅, 리스트에 elements(리스트 내용)세팅
     private void setListView(){
-        // 리스트 뷰 세팅( 커스텀 리스트뷰어댑터 )
         ListViewAdapter adapter = new ListViewAdapter(ContentPage.this, elements);
         listView.setAdapter(adapter);
     }
 
+    //글 내용을 서버에서 받아오는 asynctask
     class GetContextAsync extends AsyncTask<String, Void, String> {
         ProgressDialog loading;
 
@@ -135,6 +140,7 @@ public class ContentPage extends Activity {
             try {
                 String context_no = (String)params[0];
 
+                //글 번호를 서버에 전송 php서버에서는 POST로 받음, 글 번호가 게시물 데이터베이스의 primary key
                 String data = URLEncoder.encode("number", "UTF-8") + "=" + URLEncoder.encode(context_no, "UTF-8");
 
                 java.net.URL url = new URL(URL);
@@ -152,7 +158,7 @@ public class ContentPage extends Activity {
                 StringBuilder sb = new StringBuilder();
                 String line = null;
 
-                // Read Server Response
+                //php서버에서 echo하는 데이터를 받음 (php서버에서 json형태로 parsing)
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
                     break;
@@ -167,21 +173,23 @@ public class ContentPage extends Activity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             loading.dismiss();
-            System.out.println(result);
             if (!result.equalsIgnoreCase("failure")) {
                 try {
+                    //서버에서 받은 데이터를 jsonobject에 저장
                     JSONObject root = new JSONObject(result);
 
+                    //result jsonarray에 받아야할 데이터가 들어있으므로
+                    //jsonarray를 따로 저장
                     JSONArray ja = root.getJSONArray("result");
                     if(ja.length()!=0) {
                         String[] context = new String[]{
-                                ja.getJSONObject(0).getString("title"),
-                                ja.getJSONObject(0).getString("body"),
-                                ja.getJSONObject(0).getString("time"),
-                                ja.getJSONObject(0).getString("userid"),
-                                ja.getJSONObject(0).getString("content_no"),
-                                ja.getJSONObject(0).getString("img"),
-                                ja.getJSONObject(0).getString("cnum")
+                                ja.getJSONObject(0).getString("title"), //제목
+                                ja.getJSONObject(0).getString("body"), //내용
+                                ja.getJSONObject(0).getString("time"), //작성 시간
+                                ja.getJSONObject(0).getString("userid"), //작성자
+                                ja.getJSONObject(0).getString("content_no"), //글 번호
+                                ja.getJSONObject(0).getString("img"), //이미지 uri
+                                ja.getJSONObject(0).getString("cnum") //댓글 개수
                         };
                         TextView titleTv = (TextView) findViewById(R.id.titleTV);
                         TextView mainTv = (TextView) findViewById(R.id.mainTV);
@@ -189,14 +197,18 @@ public class ContentPage extends Activity {
                         TextView writerTv = (TextView) findViewById(R.id.writerTV);
                         TextView cnumTv = (TextView) findViewById(R.id.textView5);
 
-                        titleTv.setText(context[0]);
+                        titleTv.setText(context[0]); //글 제목 세팅
+                        //php서버에서 echo할 때 \n이 포함되어 있을 경우에 데이터를 받아오지 못해서
+                        //앱애서 서버로 전송할 때 \n을 특정 string으로 변경
+                        //앱이 서버에서 이 데이터를 다시 받을때는 반대로 string 변경
                         mainTv.setText(context[1].replace("이것은줄바꿈이다!!!","\n"));
-                        timeTv.setText("작성 날짜 : "+context[2]);
-                        writerTv.setText("작성자 : "+context[3]);
-                        cnumTv.setText("댓글("+context[6]+")");
+                        timeTv.setText("작성 날짜 : "+context[2]); //작성 날짜 세팅
+                        writerTv.setText("작성자 : "+context[3]); //작성자 세팅
+                        cnumTv.setText("댓글("+context[6]+")"); //댓글 개수 세팅
+                        //이미지 uri string이 noImg가 아니면 uri가 있음 -> 글 작성 시 이미지 첨부
                         if(!context[5].equals("noImg")){
                             Glide.with(ContentPage.this).load(context[5]).into(image);
-                        }else{
+                        }else{ //이미지를 첨부하지 않았을 경우
                             image.setVisibility(GONE);
                         }
                     }
@@ -207,6 +219,7 @@ public class ContentPage extends Activity {
         }
     }
 
+    //작성한 댓글을 서버에 전송하는 asynctask
     class WriteCommentAsync extends AsyncTask<String, Void, String> {
         ProgressDialog loading;
 
@@ -225,7 +238,7 @@ public class ContentPage extends Activity {
                 String body = (String)params[3];
                 String time = (String)params[4];
 
-
+                //게시글의 종류(마켓,교환,기부), 글 번호, 작성자, 내용, 작성시간을 서버에 전송, php서버에서는 POST로 받음
                 String data = URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode(type, "UTF-8");
                 data += "&" + URLEncoder.encode("context_no", "UTF-8") + "=" + URLEncoder.encode(context_no, "UTF-8");
                 data += "&" + URLEncoder.encode("writer", "UTF-8") + "=" + URLEncoder.encode(writer, "UTF-8");
@@ -247,7 +260,7 @@ public class ContentPage extends Activity {
                 StringBuilder sb = new StringBuilder();
                 String line = null;
 
-                // Read Server Response
+                //php서버에서 echo하는 데이터를 받음 (php서버에서 json형태로 parsing)
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
                     break;
@@ -270,7 +283,7 @@ public class ContentPage extends Activity {
         }
     }
 
-
+    //댓글 리스트를 서버에서 받는 asynctask
     class GetCommentListAsync extends AsyncTask<String, Void, String> {
         ProgressDialog loading;
 
@@ -285,7 +298,7 @@ public class ContentPage extends Activity {
             try {
                 String type = (String)params[0];
                 String context_no = (String)params[1];
-
+                //게시글의 종류(마켓,교환,기부), 글 번호를 서버에 전송, php서버에서는 POST로 받음
                 String data = URLEncoder.encode("type", "UTF-8") + "=" + URLEncoder.encode(type, "UTF-8");
                 data += "&" + URLEncoder.encode("number", "UTF-8") + "=" + URLEncoder.encode(context_no, "UTF-8");
 
@@ -304,7 +317,7 @@ public class ContentPage extends Activity {
                 StringBuilder sb = new StringBuilder();
                 String line = null;
 
-                // Read Server Response
+                //php서버에서 echo하는 데이터를 받음 (php서버에서 json형태로 parsing)
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
                     break;
@@ -323,13 +336,15 @@ public class ContentPage extends Activity {
                 try {
                     elements = new ArrayList<Element>();
                     JSONObject root = new JSONObject(result);
-
                     JSONArray ja = root.getJSONArray("result");
+
+                    //서버에서 받아온 결과를 ArrayList<Element>에 저장
                     if(ja.length()!=0) {
                         for(int i=ja.length()-1;i>=0;i--){
                             elements.add(new Element("- "+ja.getJSONObject(i).getString("writer")+" -\n\n"+ ja.getJSONObject(i).getString("body"), ja.getJSONObject(i).getString("time")));
                         }
                     }
+                    //elements를 리스트뷰에 세팅
                     setListView();
                 }catch(JSONException e){
                     e.printStackTrace();

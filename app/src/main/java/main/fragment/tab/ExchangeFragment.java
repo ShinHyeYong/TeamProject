@@ -34,10 +34,9 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
     private ListView listView;
     ArrayList<Element> elements;
 
-    public ExchangeFragment() {
-        // Required empty public constructor
-    }
+    public ExchangeFragment() {}
 
+    //프래그먼트 인스턴스 생성
     public static ExchangeFragment newInstance() {
         ExchangeFragment fragment = new ExchangeFragment();
         Bundle args = new Bundle();
@@ -48,9 +47,9 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        elements = new ArrayList<>();
-        GetEListThread thread = new GetEListThread();
-        Constants.tpexecutor.execute(thread);
+        elements = new ArrayList<>(); //elements 객체 생성
+        GetEListThread thread = new GetEListThread(); //리스트 불러오는 쓰레드 생성
+        Constants.tpexecutor.execute(thread); //쓰레드 풀로 쓰레드 실행
 
     }
 
@@ -58,11 +57,11 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this main.fragment
+        //프래그먼트의 레이아웃
         View view = inflater.inflate(R.layout.fragment_exchange, container, false);
 
-        // 리스트뷰에 대한 세팅?선언
         listView = (ListView) view.findViewById(R.id.elistView);
+        //글 작성 버튼에 리스너 세팅
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.efab);
         fab.setOnClickListener(this);
 
@@ -72,9 +71,10 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void setListView(){
-        // 리스트 뷰 세팅( 커스텀 리스트뷰어댑터 )
+        // 리스트 뷰 세팅( 커스텀 리스트뷰어댑터 ), elemets에 있는 값을 리스트에 세팅
         ListViewAdapter adapter = new ListViewAdapter(getActivity(), elements);
         listView.setAdapter(adapter);
+        //리스트 아이템 클릭 시 게시글을 확인하는 contentpage로 이동하는 리스너 세팅
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position,
@@ -89,21 +89,22 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
         });
     }
 
+    //글 작성 버튼의 onclick 함수
     @Override
     public void onClick(View v) {
-        if(UserInfo.UserEntry.IS_LOGIN == true) {
+        if(UserInfo.UserEntry.IS_LOGIN == true) { //로그인 상태면 글 작성
             Intent intent = new Intent(getActivity(), WritePage.class);
             intent.putExtra("fragmentType","exchange");
             startActivity(intent);
             getActivity().finish();
-        }else{
+        }else{ //비로그인 상태면 로그인 액티비티로 이동
             Intent intent = new Intent(getActivity(), LogInActivity.class);
             startActivity(intent);
             getActivity().finish();
         }
     }
 
-
+    //게시글 리스트 서버에서 받아오는 쓰레드
     class GetEListThread extends Thread{
         @Override
         public void run(){
@@ -117,7 +118,7 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
                 StringBuilder sb = new StringBuilder();
                 String line = null;
 
-                // Read Server Response
+                //php서버에서 echo하는 데이터를 받음 (php서버에서 json형태로 parsing)
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
                     break;
@@ -127,8 +128,9 @@ public class ExchangeFragment extends Fragment implements View.OnClickListener{
                 if (!result.equalsIgnoreCase("failure")) {
                     try {
                         JSONObject root = new JSONObject(result);
-
                         JSONArray ja = root.getJSONArray("result");
+
+                        //서버에서 받아온 결과를 ArrayList<Element>에 저장
                         if(ja.length()!=0) {
                             for(int i=ja.length()-1;i>=0;i--){
                                 elements.add(new Element(ja.getJSONObject(i).getString("title"), ja.getJSONObject(i).getString("time")));

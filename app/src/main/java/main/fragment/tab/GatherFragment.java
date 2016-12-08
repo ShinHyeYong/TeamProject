@@ -1,6 +1,5 @@
 package main.fragment.tab;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +28,6 @@ import java.util.Set;
 
 import psj.hahaha.R;
 import sub.listpage.ChattingActivity;
-import utils.Element;
 import utils.adapter.ChatListAdapter;
 import utils.dbconnected.LogInActivity;
 import utils.model.UserInfo;
@@ -37,16 +35,13 @@ import utils.model.UserInfo;
 public class GatherFragment extends Fragment implements View.OnClickListener {
 
     private ListView listView;
-    ArrayList<Element> elements;
     private ChatListAdapter arrayAdapter;
     private ArrayList<String> list_of_rooms = new ArrayList<>();
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot(); //FCM DataBase root를 불러옴.
-    private String timeStamp;
 
-    public GatherFragment() {
-        // Required empty public constructor
-    }
+    public GatherFragment() {}
 
+    //프래그먼트 인스턴스 생성
     public static GatherFragment newInstance() {
         GatherFragment fragment = new GatherFragment();
         Bundle args = new Bundle();
@@ -122,12 +117,12 @@ public class GatherFragment extends Fragment implements View.OnClickListener {
         });
     }
 
-
+    //글 작성 버튼의 onclick 함수
     @Override
     public void onClick(View view) {
         if (UserInfo.UserEntry.IS_LOGIN) {
 
-            Dialog dialog = new Dialog(getActivity());
+            //다이얼로그 빌더
             final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
 
             builder.setTitle("새로 만드실 채팅방 이름을 입력해주세요.");

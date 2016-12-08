@@ -1,6 +1,5 @@
 package main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +18,6 @@ public class SubActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sub);
 
-//        Intent intent = new Intent();
         TextView title = (TextView) findViewById(R.id.toolbar_title);
 
         int count = getIntent().getExtras().getInt(Constants.FRAGMENT_KEY);

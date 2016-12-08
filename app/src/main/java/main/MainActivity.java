@@ -89,7 +89,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         TextView tab_title = (TextView) linearLayout.getChildAt(0);
         tab_title.setTextColor(getResources().getColor(R.color.navigationBarColor));
 
-        //탭이동 설정
+        //탭이동 설정 (교환, 마켓, 기부 글 작성 액티비티에서 작성을 완료하지 않고 메인 액티비티로 돌아올 경우
+        //이전에 화면에 나와있던 탭을 보여줌)
         if(getIntent().getStringExtra("write")!=null && getIntent().getStringExtra("write").equals("ex")){
             viewPager.setCurrentItem(1);
         }else if(getIntent().getStringExtra("write")!=null && getIntent().getStringExtra("write").equals("mk")){

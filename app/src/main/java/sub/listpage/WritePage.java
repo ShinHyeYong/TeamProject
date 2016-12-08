@@ -61,6 +61,8 @@ public class WritePage extends Activity {
 
         eImage = (ImageView) findViewById(R.id.imageWrite);
         Intent i = getIntent();
+        //어떤 프래그먼트에서 글을 작성하는지 구분
+        //프래그먼트에 따라 URL도 다름
         fragmentType = i.getStringExtra("fragmentType");
         if(fragmentType.equals("market"))
             URL = "http://210.91.76.33:8080/context/writemarketcontext.php";
@@ -68,6 +70,7 @@ public class WritePage extends Activity {
             URL = "http://210.91.76.33:8080/context/writeexchangecontext.php";
     }
 
+    //메인 액티비티로 이동
     public void goMain(View v){
 
         Intent mainIntent = new Intent(WritePage.this, MainActivity.class);
@@ -99,6 +102,9 @@ public class WritePage extends Activity {
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             String formattedDate = df.format(c.getTime());
+            //php서버에서 echo할 때 \n이 포함되어 있을 경우에 데이터를 받아오지 못해서
+            //앱애서 서버로 전송할 때 \n을 특정 string으로 변경
+            //앱이 서버에서 이 데이터를 다시 받을때는 반대로 string 변경
             String body = eMain.getText().toString().replace("\n","이것은줄바꿈이다!!!");
 
             WriteContextAsync task = new WriteContextAsync();
@@ -109,7 +115,7 @@ public class WritePage extends Activity {
         }
     }
 
-
+    //휴대폰의 back버튼을 탭 했을 경우 앱이 종료되지 않고 메인 액티비티로 이동
     @Override
     public void onBackPressed() {
         Intent mainIntent = new Intent(WritePage.this, MainActivity.class);
@@ -122,9 +128,9 @@ public class WritePage extends Activity {
 
     }
 
+    //dialogoptionmenu의 layout을 지정
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds options to the action bar if it is present.
         getMenuInflater().inflate(R.menu.write_main,menu);
         return true;
     }
@@ -146,51 +152,57 @@ public class WritePage extends Activity {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals("사진 촬영"))
                 {
+                    //이미지 캡쳐(카메라)를 실행하기 위한 intent 생성 및 실행
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg"); //임시로 temp.jpg라고 이름을 지정
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
                 }
                 else if (options[item].equals("앨범"))
                 {
+                    //앨범에서 이미지를 선택하기 위한 intent 생성 및 실행
                     Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
-
                 }
                 else if (options[item].equals("취소")) {
                     dialog.dismiss();
                 }
             }
         });
-        builder.show();
+        builder.show(); //alertdialog 실행
     }
 
-
+    //dialog에서 이미지 캡쳐 또는 앨범에서 이미지 선택한 후 실행하는 함수
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == 1) {
+            if (requestCode == 1) { //이미지 캡쳐(카메라)
                 File f = new File(Environment.getExternalStorageDirectory().toString());
                 for (File temp : f.listFiles()) {
-                    if (temp.getName().equals("temp.jpg")) {
+                    if (temp.getName().equals("temp.jpg")) { //카메라로 찍을 때 temp.jpg로 이름을 지정했기 때문에 temp.jpg 파일을 찾음
                         f = temp;
                         break;
                     }
                 }
                 try {
-
+                    //카메라 화질이 너무 좋으면 imageview에 넣을 수가 없어서
+                    //이미지 크기 축소 (이미지 비트맵으로 수정)
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
                     bitmapOptions.inSampleSize = 4;
                     bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
                             bitmapOptions);
                     bitmap = Bitmap.createScaledBitmap(bitmap, 1680, 1680, true);
 
+                    //이미지 비트맵을 bytearray로 변환하고 Base64를 이용해 string으로 인코딩
+                    //php서버에 string을 전송하고 php서버에서 디코딩하여 이미지를 파일로 저장
+                    //데이터베이스(mysql)에는 이미지 uri를 저장
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                     byte[] b = baos.toByteArray();
                     imgString = Base64.encodeToString(b, Base64.DEFAULT);
 
+                    //이미지 뷰에 이미지 삽입
                     eImage.setImageBitmap(bitmap);
 
                     String path = android.os.Environment
@@ -215,8 +227,9 @@ public class WritePage extends Activity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else if (requestCode == 2) {
+            } else if (requestCode == 2) { //앨범에서 이미지 선택
 
+                //cursor 및 contentResolver를 이용하여 선택한 이미지의 파일 경로를 가져옴
                 Uri selectedImage = data.getData();
                 String[] filePath = { MediaStore.Images.Media.DATA };
                 Cursor c = getContentResolver().query(selectedImage,filePath, null, null, null);
@@ -224,13 +237,20 @@ public class WritePage extends Activity {
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
                 c.close();
+
+                //파일경로의 이미지를 비트맵으로 변환
                 bitmap = (BitmapFactory.decodeFile(picturePath));
 
+
+                //이미지 비트맵을 bytearray로 변환하고 Base64를 이용해 string으로 인코딩
+                //php서버에 string을 전송하고 php서버에서 디코딩하여 이미지를 파일로 저장
+                //데이터베이스(mysql)에는 이미지 uri를 저장
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] b = baos.toByteArray();
                 imgString = Base64.encodeToString(b, Base64.DEFAULT);
 
+                //이미지 뷰에 이미지 삽입
                 eImage.setImageBitmap(bitmap);
             }
         }
@@ -254,6 +274,7 @@ public class WritePage extends Activity {
                 String context_usrid = (String) params[3];
                 String context_img = (String) params[4];
 
+                //글 제목, 내용, 작성 시간, 작성자, 이미지를 서버에 전송 php에서는 POST로 받음
                 String data = URLEncoder.encode("title", "UTF-8") + "=" + URLEncoder.encode(context_title, "UTF-8");
                 data += "&" + URLEncoder.encode("body", "UTF-8") + "=" + URLEncoder.encode(context_body, "UTF-8");
                 data += "&" + URLEncoder.encode("time", "UTF-8") + "=" + URLEncoder.encode(context_time, "UTF-8");
@@ -275,7 +296,7 @@ public class WritePage extends Activity {
                 StringBuilder sb = new StringBuilder();
                 String line = null;
 
-                // Read Server Response
+                //php서버에서 echo하는 데이터를 받음 (php서버에서 json형태로 parsing)
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
                     break;
@@ -296,6 +317,7 @@ public class WritePage extends Activity {
                     String number = root.getString("result").toString();
 
                     Toast.makeText(getApplicationContext(), "글 작성이 완료되었습니다.", Toast.LENGTH_LONG).show();
+                    //글이 작성되었을 경우에는 작성한 글을 볼 수 있는 contentpage 액티비티로 이동
                     Intent intent = new Intent(WritePage.this, ContentPage.class);
                     intent.putExtra("fragmentType",fragmentType);
                     intent.putExtra("contentnum",number);

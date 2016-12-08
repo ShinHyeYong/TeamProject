@@ -14,6 +14,8 @@ public class AppApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        // Firebase 초기화
         FirebaseApp.initializeApp(this);
     }
 }
+
