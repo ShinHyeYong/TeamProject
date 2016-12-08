@@ -3,10 +3,9 @@ package main.fragment.tab;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,21 +20,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mikepenz.iconics.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import sub.listpage.ChatRoom;
-import sub.listpage.WritePage;
-import utils.Element;
-import utils.adapter.ListViewAdapter;
 import psj.hahaha.R;
+import sub.listpage.ChattingActivity;
+import utils.Element;
 import utils.dbconnected.LogInActivity;
 import utils.model.UserInfo;
 
@@ -82,7 +77,7 @@ public class GatherFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if(UserInfo.UserEntry.IS_LOGIN == true) {
-                    Intent intent = new Intent(getActivity(), ChatRoom.class);
+                    Intent intent = new Intent(getActivity(), ChattingActivity.class);
                     intent.putExtra("room_name", ((TextView) view).getText().toString());
                     intent.putExtra("user_name", UserInfo.UserEntry.USER_NAME);
                     startActivity(intent);
