@@ -17,7 +17,7 @@ public class QnaFragment extends Fragment implements View.OnClickListener {
     EditText et;
 
     private final String MAIL_TO = "shy954006@gmail.com";
-    private final String MAIL_TITLE = "~~에 관해 문의 드립니다.";
+    private final String MAIL_TITLE = "문의 드립니다.";
 
     public QnaFragment() {
         // Required empty public constructor

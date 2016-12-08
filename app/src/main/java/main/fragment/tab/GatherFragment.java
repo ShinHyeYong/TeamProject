@@ -128,7 +128,7 @@ public class GatherFragment extends Fragment implements View.OnClickListener {
             Dialog dialog = new Dialog(getActivity());
             final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(getActivity());
 
-            builder.setTitle("채팅방을 만듭니다.");
+            builder.setTitle("새로 만드실 채팅방 이름을 입력해주세요.");
             final EditText input = new EditText(getActivity());
             builder.setView(input);
 
@@ -136,7 +136,7 @@ public class GatherFragment extends Fragment implements View.OnClickListener {
                 public void onClick(DialogInterface dialog, int whichButton) {
 
                     Map<String,Object> map = new HashMap<String, Object>();
-                    map.put("채팅방 :  " + input.getText().toString(),"");
+                    map.put(" " + input.getText().toString(),"");
                     root.updateChildren(map);
                     dialog.dismiss();
                 }

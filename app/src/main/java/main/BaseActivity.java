@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -28,7 +29,7 @@ import utils.model.UserInfo;
 /**
  * Created by HY on 2016-11-09.
  */
-public class BaseActivity extends AppCompatActivity implements Drawer.OnDrawerItemClickListener {
+public class BaseActivity extends FragmentActivity implements Drawer.OnDrawerItemClickListener {
     private static String TAG = BaseActivity.class.getSimpleName();
     /* Drawer */
     private AccountHeader header;
@@ -94,10 +95,10 @@ public class BaseActivity extends AppCompatActivity implements Drawer.OnDrawerIt
 
     protected void setNavigationDrawer(Bundle args) {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        /*setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayShowHomeEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(false);*/
 
         View layout = getLayoutInflater().inflate(R.layout.fragment_navigation_drawer, null);
 
