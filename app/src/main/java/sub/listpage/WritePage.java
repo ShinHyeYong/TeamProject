@@ -238,8 +238,12 @@ public class WritePage extends Activity {
                 String picturePath = c.getString(columnIndex);
                 c.close();
 
-                //파일경로의 이미지를 비트맵으로 변환
-                bitmap = (BitmapFactory.decodeFile(picturePath));
+                //카메라 화질이 너무 좋으면 imageview에 넣을 수가 없어서
+                //이미지 크기 축소 (이미지 비트맵으로 수정)
+                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                bitmapOptions.inSampleSize = 4;
+                bitmap = BitmapFactory.decodeFile(picturePath, bitmapOptions);
+                bitmap = Bitmap.createScaledBitmap(bitmap, 1680, 1680, true);
 
 
                 //이미지 비트맵을 bytearray로 변환하고 Base64를 이용해 string으로 인코딩
