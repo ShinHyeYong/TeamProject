@@ -117,7 +117,7 @@ public class ContentPage extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = ProgressDialog.show(ContentPage.this, "잠시만요.", "로딩중...");
+            loading = ProgressDialog.show(ContentPage.this, "\t잠시 기다려 주세요.", "로딩중...");
         }
 
         @Override
@@ -177,7 +177,7 @@ public class ContentPage extends Activity {
 
                         titleTv.setText(context[0]);
                         mainTv.setText(context[1]);
-                        timeTv.setText("작성 날짜 : "+context[2]);
+                        timeTv.setText(context[2]);
                         writerTv.setText("작성자 : "+context[3]);
                     }
                 }catch(JSONException e){
@@ -193,7 +193,7 @@ public class ContentPage extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = ProgressDialog.show(ContentPage.this, "잠시만요.", "로딩중...");
+            loading = ProgressDialog.show(ContentPage.this, "업로드 중입니다.", "로딩중...");
         }
 
         @Override
@@ -257,7 +257,7 @@ public class ContentPage extends Activity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            loading = ProgressDialog.show(ContentPage.this, "잠시만요.", "로딩중...");
+            loading = ProgressDialog.show(ContentPage.this, "업로드 중입니다.", "로딩중...");
         }
 
         @Override
@@ -307,7 +307,7 @@ public class ContentPage extends Activity {
                     JSONArray ja = root.getJSONArray("result");
                     if(ja.length()!=0) {
                         for(int i=ja.length()-1;i>=0;i--){
-                            elements.add(new Element("- "+ja.getJSONObject(i).getString("writer")+" -\n\n"+ ja.getJSONObject(i).getString("body"), ja.getJSONObject(i).getString("time")));
+                            elements.add(new Element(" "+ja.getJSONObject(i).getString("writer")+" \n\n"+ ja.getJSONObject(i).getString("body"), ja.getJSONObject(i).getString("time")));
                         }
                     }
                     setListView();
