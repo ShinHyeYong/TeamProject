@@ -32,6 +32,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         notifyItemRemoved(position);
     }
 
+    // viewholder로 정렬
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.nav_drawer_row, parent, false);
@@ -39,6 +40,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         return holder;
     }
 
+    // 여기서 세팅해주는 값이 최종으로 출력 됨
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         NavDrawerItem current = data.get(position);
@@ -50,6 +52,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         return data.size();
     }
 
+    // 초기값 세팅
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView title;
 

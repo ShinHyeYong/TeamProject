@@ -52,8 +52,10 @@ public class ChattingActivity extends AppCompatActivity {
         user_name = getIntent().getExtras().get("user_name").toString();
         room_name = getIntent().getExtras().get("room_name").toString();
 
+        // arrayList 생성
         arrayList = new ArrayList<>();
 
+        // 채팅방 이름 받아옴
         setTitle(room_name);
 
         root = FirebaseDatabase.getInstance().getReference().child(room_name);
@@ -83,35 +85,31 @@ public class ChattingActivity extends AppCompatActivity {
         root.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
                 append_chat_id(dataSnapshot);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
                 append_chat_id(dataSnapshot);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 
         setListener();
     }
 
+    // adapter를 가져와 arrayList에 뿌려줌
     private void setListener() {
         adapter = new ChatLogAdapter(this, arrayList);
 
@@ -121,15 +119,18 @@ public class ChattingActivity extends AppCompatActivity {
     private void append_chat_id(DataSnapshot dataSnapshot) {
 
         Iterator i = dataSnapshot.getChildren().iterator();
+        // 상대방이면 채팅을 왼쪽에
         Chatting info = new Chatting(null, null, null, R.layout.chat_leftrow);
+
+        // x 값으로 msg, id, time 확인
         int x = 0;
         while (i.hasNext()) {
             String serverToText = (String) ((DataSnapshot) i.next()).getValue();
-            Log.i("Message", "" + x + " " + serverToText);
             switch (x) {
                 case 0:
                     info.setComment(serverToText);
                     break;
+                // id가 사용자와 일치하면 채팅을 오른쪽에
                 case 1:
                     info.setId(serverToText);
                     if (user_name.equals(serverToText)) {
@@ -140,10 +141,10 @@ public class ChattingActivity extends AppCompatActivity {
                     info.setTime(serverToText);
                     break;
             }
+            // 리스트 증가
             x++;
         }
         arrayList.add(info);
-        Log.i("Test", arrayList.toString());
     }
 
 }
